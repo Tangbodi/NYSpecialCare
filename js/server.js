@@ -11,10 +11,13 @@ app.use(bodyParser.json()); // Parse JSON request bodies
 
 // Configure Nodemailer
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Use your email provider's service (e.g., Gmail, Outlook)
+    service: 'Godaddy',
+    host: "email.secureserver.net.",
+    secure: true,
+    port: 465,
     auth: {
-        user: 'tangbodi@gmail.com', // Replace with your email
-        pass: 'yxzk lpzp chlu bccc', // Replace with your email password or app password
+        user: 'info@nyspecialcare.org', // Replace with your email
+        pass: '1992530Fj@', // Replace with your email password or app password
     },
 });
 
