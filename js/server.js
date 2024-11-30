@@ -11,14 +11,16 @@ app.use(bodyParser.json()); // Parse JSON request bodies
 
 // Configure Nodemailer
 const transporter = nodemailer.createTransport({
-    service: 'Godaddy',
-    host: "email.secureserver.net.",
-    secure: true,
-    port: 465,
+    host: 'smtp.office365.com',
+    secure: false,
+    port: 587,
     auth: {
         user: 'info@nyspecialcare.org', // Replace with your email
         pass: '1992530Fj@', // Replace with your email password or app password
     },
+    tls: {
+        ciphers: 'SSLv3'
+    }
 });
 
 // Endpoint to handle email submission
