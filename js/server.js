@@ -1,13 +1,20 @@
 const express = require('express');
-const cors = require('cors');
+const https = require('https');
+const http = require('http');
+const fs = require('fs');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 
 const app = express();
 
-// Middleware
-app.use(cors()); // Enable CORS for all origins
-app.use(bodyParser.json()); // Parse JSON request bodies
+var options = {
+    key:fs.readFileSync('/usr/share/nginx/nycert/private.key'),
+    cert:fs.readFileSync('/usr/share/nginx/nycert/ssl-bundle.crt')
+}
+var httpsServer = https.createServer(options,app);
+var httpServer = http.createServer(app);
+
+app.use(bodyParser.json()); 
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -56,7 +63,10 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+// const PORT = 3000;
+// app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+// });
+
+httpsServer.listen(3000);
+httpServer.listen(3001);
