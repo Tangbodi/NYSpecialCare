@@ -8,7 +8,9 @@ const nodemailer = require('nodemailer');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'https://www.nyspecialcare.org', 
+}));
 app.use(bodyParser.json());
 
 const transporter = nodemailer.createTransport({
