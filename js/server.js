@@ -55,8 +55,21 @@ app.use((err, req, res, next) => {
     res.status(500).json({ status: 'error', message: 'Internal Server Error' });
 });
 
+var https = require('https');
+
+var fs = require('fs');
+
+var options = {
+
+ key: fs.readFileSync('/usr/share/nginx/nycert/private.key'),
+
+ cert: fs.readFileSync('/usr/share/nginx/nycert/certificate.crt'),
+
+ ca: fs.readFileSync ('/usr/share/nginx/nycert/bundle.ca-bundle')
+
+};
 // Start the server
 const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on https://localhost:${PORT}`);
+https.createServer(options, app).listen(PORT, () => {
+    console.log(`Secure server running at http://localhost:${PORT}`);
 });
