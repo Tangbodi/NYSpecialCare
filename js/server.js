@@ -9,14 +9,19 @@ const app = express();
 app.use(cors()); // Enable CORS for all origins
 app.use(bodyParser.json()); // Parse JSON request bodies
 
-// Configure Nodemailer
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Use your email provider's service (e.g., Gmail, Outlook)
+    host: 'smtp.office365.com', // SMTP server
+    port: 25, // Recommended port for TLS
+    secure: false, // Use TLS; secure=false means STARTTLS will be used
     auth: {
-        user: 'tangbodi@gmail.com', // Replace with your email
-        pass: 'yxzk lpzp chlu bccc', // Replace with your email password or app password
+        user: 'info@nyspecialcare.org', // Replace with your Microsoft 365 email
+        pass: '1992530Fj@', // Use the password or app password for the mailbox
+    },
+    tls: {
+        ciphers: 'SSLv3', // Ensures compatibility with Microsoft servers
     },
 });
+
 
 // Endpoint to handle email submission
 app.post('/send-email', (req, res) => {
@@ -30,8 +35,8 @@ app.post('/send-email', (req, res) => {
 
     // Email options
     const mailOptions = {
-        from: email, // Sender's email
-        to: 'tangbodi@gmail.com', // Your email to receive messages
+        from: email,
+        to: 'info@nyspecialcare.org', 
         subject: `New Contact Form Submission: ${subject}`,
         text: `You have a new message from ${name} (${email}):\n\n${message}`,
     };
