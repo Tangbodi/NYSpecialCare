@@ -10,35 +10,31 @@ app.use(cors()); // Enable CORS for all origins
 app.use(bodyParser.json()); // Parse JSON request bodies
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.office365.com', // SMTP server
-    port: 25, // Recommended port for TLS
-    secure: false, // Use TLS; secure=false means STARTTLS will be used
+    service: 'gmail',
+    port: 465,
     auth: {
-        user: 'info@nyspecialcare.org', // Replace with your Microsoft 365 email
-        pass: '1992530Fj@', // Use the password or app password for the mailbox
-    },
-    tls: {
-        ciphers: 'SSLv3', // Ensures compatibility with Microsoft servers
-    },
+        user: 'nyspecialcare@gmail.com', // Replace with your Microsoft 365 email
+        pass: 'qdrc sgum kqan qszy', // Use the password or app password for the mailbox
+    }
 });
 
 
 // Endpoint to handle email submission
 app.post('/send-email', (req, res) => {
-    const { name, email, subject, message } = req.body;
+    const { firstName, lastName, email, message } = req.body;
 
-    console.log('Received form data:', { name, email, subject, message });
+    console.log('Received form data:', { firstName, lastName, email, message });
 
-    if (!name || !email || !subject || !message) {
+    if (!firstName || !lastName || !email || !message) {
         return res.status(400).json({ status: 'error', message: 'All fields are required.' });
     }
 
     // Email options
     const mailOptions = {
-        from: email,
-        to: 'info@nyspecialcare.org', 
-        subject: `New Contact Form Submission: ${subject}`,
-        text: `You have a new message from ${name} (${email}):\n\n${message}`,
+        from: 'nyspecialcare@gmail.com',
+        to: 'bodi.tang@nyspecialcare.org', 
+        subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
+        text: `You have a new message from ${firstName} ${lastName} (${email}):\n\n${message}`,
     };
 
     // Send the email
