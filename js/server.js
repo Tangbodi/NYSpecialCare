@@ -7,11 +7,11 @@ const nodemailer = require('nodemailer');
 
 const app = express();
 
-var options = {
-    key:fs.readFileSync('/usr/share/nginx/nycert/private.key'),
-    cert:fs.readFileSync('/usr/share/nginx/nycert/ssl-bundle.crt')
-}
-var httpsServer = https.createServer(options,app);
+// var options = {
+//     key:fs.readFileSync('/usr/share/nginx/nycert/private.key'),
+//     cert:fs.readFileSync('/usr/share/nginx/nycert/ssl-bundle.crt')
+// }
+// var httpsServer = https.createServer(options,app);
 var httpServer = http.createServer(app);
 
 app.use(bodyParser.json()); 
@@ -68,5 +68,5 @@ app.use((err, req, res, next) => {
 //     console.log(`Server is running on http://localhost:${PORT}`);
 // });
 
-httpsServer.listen(8180);
+// httpsServer.listen(8180);
 httpServer.listen(8080);
