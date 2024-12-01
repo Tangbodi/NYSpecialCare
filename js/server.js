@@ -68,5 +68,4 @@ app.use((err, req, res, next) => {
 //     console.log(`Server is running on http://localhost:${PORT}`);
 // });
 
-httpsServer.listen(3000);
-httpServer.listen(3001);
+httpServer.listen(8080);
