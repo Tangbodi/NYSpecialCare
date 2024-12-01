@@ -178,22 +178,23 @@
                             <div class="row g-3">
                                 <div class="col-sm-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control border-0" id="name" placeholder="Your Name" required>
-                                        <label for="name">Your Name</label>
+                                        <input type="text" class="form-control border-0" id="firstName" placeholder="First Name" required>
+                                        <label for="firstName">First Name</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control border-0" id="lastName" placeholder="Last Name" required>
+                                        <label for="lastName">Last Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
                                     <div class="form-floating">
                                         <input type="email" class="form-control border-0" id="email" placeholder="Your Email" required>
                                         <label for="email">Your Email</label>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control border-0" id="subject" placeholder="Subject" required>
-                                        <label for="subject">Subject</label>
-                                    </div>
-                                </div>
+                              
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <textarea class="form-control border-0" placeholder="Leave a message here" id="message" style="height: 100px" required></textarea>
@@ -210,9 +211,9 @@
                                 e.preventDefault();
                         
                                 const formData = {
-                                    name: document.getElementById('name').value,
+                                    firstName: document.getElementById('firstName').value,
+                                    lastName: document.getElementById('lastName').value,
                                     email: document.getElementById('email').value,
-                                    subject: document.getElementById('subject').value,
                                     message: document.getElementById('message').value,
                                 };
                         
