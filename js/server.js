@@ -45,6 +45,6 @@ app.post('/send-email', (req, res) => {
 });
 
 
-https.createServer(options, app).listen(3000, () => {
+https.createServer(app).listen(3000, () => {
     console.log('HTTPS Server running on https://localhost:3000');
 });
