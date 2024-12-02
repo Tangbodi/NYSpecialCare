@@ -4,15 +4,9 @@ const http = require('http');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const app = express();
-
-// var options = {
-//     key:fs.readFileSync('/usr/share/nginx/nycert/private.key'),
-//     cert:fs.readFileSync('/usr/share/nginx/nycert/ssl-bundle.crt')
-// }
-// var httpsServer = https.createServer(options,app);
-var httpServer = http.createServer(app);
 
 app.use(bodyParser.json()); 
 
@@ -20,8 +14,8 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 465,
     auth: {
-        user: 'nyspecialcare@gmail.com', // Replace with your Microsoft 365 email
-        pass: 'qdrc sgum kqan qszy', // Use the password or app password for the mailbox
+        user: process.env.GMAIL_USER, 
+        pass: process.env.GMAIL_PASS, 
     }
 });
 
@@ -50,7 +44,6 @@ app.post('/send-email', (req, res) => {
             console.error('Error sending email:', error);
             return res.status(500).json({ status: 'error', message: 'Failed to send email.' });
         }
-
         console.log('Email sent:', info.response);
         res.json({ status: 'success', message: 'Email sent successfully!' });
     });
@@ -62,11 +55,19 @@ app.use((err, req, res, next) => {
     res.status(500).json({ status: 'error', message: 'Internal Server Error' });
 });
 
-// Start the server
-// const PORT = 3000;
-// app.listen(PORT, () => {
-//     console.log(`Server is running on http://localhost:${PORT}`);
-// });
+// HTTP and HTTPS server setup
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer({
+    key: fs.readFileSync('/usr/share/nginx/nycert/private.key'),
+    cert: fs.readFileSync('/usr/share/nginx/nycert/nyspecialcare.org.crt'),
+    ca: fs.readFileSync ('/usr/share/nginx/nycert/nyspecialcare.org.ca-bundle')
+}, app);
 
-// httpsServer.listen(8180);
-httpServer.listen(8080);
+// Start the servers
+httpServer.listen(8080, () => {
+    console.log('HTTP server running on http://localhost:8080');
+});
+
+httpsServer.listen(8180, () => {
+    console.log('HTTPS server running on https://localhost:8180');
+});
