@@ -55,11 +55,18 @@ app.use((err, req, res, next) => {
     res.status(500).json({ status: 'error', message: 'Internal Server Error' });
 });
 
-// Start the server
-// const PORT = 3000;
-// app.listen(PORT, () => {
-//     console.log(`Server is running on http://localhost:${PORT}`);
-// });
+// HTTP and HTTPS server setup
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer({
+    key: fs.readFileSync('/usr/share/nginx/nycert/private.key'),
+    cert: fs.readFileSync('/usr/share/nginx/nycert/nyspecialcare.org.crt'),
+    ca: fs.readFileSync ('/usr/share/nginx/nycert/nyspecialcare.org.ca-bundle')
+}, app);
+
+// Start the servers
+httpServer.listen(8080, () => {
+    console.log('HTTP server running on http://localhost:8080');
+});
 
 httpsServer.listen(8180, () => {
     console.log('HTTPS server running on https://localhost:8180');
