@@ -4,17 +4,9 @@ const http = require('http');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
-const app = express();
-
 require('dotenv').config();
-const cors = require('cors');
 
-app.use(cors({
-    origin: 'https://165.227.120.217:8180',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type'],
-}));
-
+const app = express();
 
 app.use(bodyParser.json()); 
 
