@@ -211,11 +211,15 @@ h6,
 .header-carousel .owl-nav {
     position: absolute;
     top: 50%;
-    right: 8%;
+    left: 0;
+    right: 0;
     transform: translateY(-50%);
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;    
+    padding: 0 3%;
 }
+
+
 
 .header-carousel .owl-nav .owl-prev,
 .header-carousel .owl-nav .owl-next {
