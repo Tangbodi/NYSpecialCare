@@ -5,6 +5,13 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const cors = require('cors');
+
+app.use(cors({
+    origin: 'https://nyspecialcare.org',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+}));
 
 const app = express();
 
