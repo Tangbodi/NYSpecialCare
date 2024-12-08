@@ -5,19 +5,21 @@ const nodemailer = require('nodemailer');
 
 const app = express();
 
-app.use(cors()); 
-app.use(bodyParser.json()); 
+// Middleware
+app.use(cors()); // Enable CORS for all origins
+app.use(bodyParser.json()); // Parse JSON request bodies
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     port: 465,
     auth: {
-        user: GMAIL_USER, 
-        pass: GMAIL_PASS,
+        user: 'nyspecialcare@gmail.com', // Replace with your Microsoft 365 email
+        pass: 'qdrc sgum kqan qszy', // Use the password or app password for the mailbox
     }
 });
 
 
+// Endpoint to handle email submission
 app.post('/send-email', (req, res) => {
     const { firstName, lastName, email, message } = req.body;
 
@@ -27,6 +29,7 @@ app.post('/send-email', (req, res) => {
         return res.status(400).json({ status: 'error', message: 'All fields are required.' });
     }
 
+    // Email options
     const mailOptions = {
         from: 'nyspecialcare@gmail.com',
         to: 'bodi.tang@nyspecialcare.org', 
@@ -34,6 +37,7 @@ app.post('/send-email', (req, res) => {
         text: `You have a new message from ${firstName} ${lastName} (${email}):\n\n${message}`,
     };
 
+    // Send the email
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.error('Error sending email:', error);
@@ -45,12 +49,14 @@ app.post('/send-email', (req, res) => {
     });
 });
 
+// Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Error:', err.message);
     res.status(500).json({ status: 'error', message: 'Internal Server Error' });
 });
 
+// Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
