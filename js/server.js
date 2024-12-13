@@ -30,12 +30,13 @@ app.post('/send-email', (req, res) => {
     }
 
     // Email options
-    const mailOptions = {
+        const mailOptions = {
         from: `"NY Special Care" <nyspecialcare@gmail.com>`,
         to: 'contactus@nyspecialcare.org', 
         subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
         text: `You have a new message from: \n\nName: ${firstName} ${lastName} \nPhone: ${phone} \nEmail: ${email} \n\nMessage: \n\n${message}`,
     };
+
 
     // Send the email
     transporter.sendMail(mailOptions, (error, info) => {
@@ -57,6 +58,6 @@ app.use((err, req, res, next) => {
 
 // Start the server
 const PORT = 3000;
-app.listen(PORT, '127.0.0.1', () => {
-    console.log(`Server is running on https://127.0.0.1:${PORT}`);
+app.listen(PORT, '127.0.0.1',() => {
+    console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
