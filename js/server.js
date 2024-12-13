@@ -30,12 +30,13 @@ app.post('/send-email', (req, res) => {
     }
 
     // Email options
-    const mailOptions = {
-        from: 'nyspecialcare@gmail.com',
-        to: 'bodi.tang@nyspecialcare.org', 
+        const mailOptions = {
+        from: `"NY Special Care" <nyspecialcare@gmail.com>`,
+        to: 'contactus@nyspecialcare.org', 
         subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
-        text: `You have a new message from ${firstName} ${lastName} (${email}):\n\n${message}`,
+        text: `You have a new message from: \n\nName: ${firstName} ${lastName} \nPhone: ${phone} \nEmail: ${email} \n\nMessage: \n\n${message}`,
     };
+
 
     // Send the email
     transporter.sendMail(mailOptions, (error, info) => {
