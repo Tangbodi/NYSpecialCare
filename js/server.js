@@ -58,7 +58,7 @@ app.use((err, req, res, next) => {
 
 // Start the server
 const PORT = 3000;
-const HOST = '165.227.120.217';
+const HOST = '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
     console.log(`Server is running on http://${HOST}:${PORT}`);
