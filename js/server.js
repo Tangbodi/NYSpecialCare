@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const app = express();
 
 // Middleware
-app.use(cors()); // Enable CORS for all origins
+app.use(cors({ origin: '*' }));  // Enable CORS for all origins
 app.use(bodyParser.json()); // Parse JSON request bodies
 
 const transporter = nodemailer.createTransport({
@@ -20,21 +20,21 @@ const transporter = nodemailer.createTransport({
 
 
 // Endpoint to handle email submission
-app.post('/send-email', (req, res) => {
-    const { firstName, lastName, email, message } = req.body;
+app.post('/api/send-email', (req, res) => {
+    const { firstName, lastName, email, phone, message } = req.body;
 
-    console.log('Received form data:', { firstName, lastName, email, message });
+    console.log('Received form data:', { firstName, lastName, email, phone, message });
 
-    if (!firstName || !lastName || !email || !message) {
+    if (!firstName || !lastName || !phone || !email || !message) {
         return res.status(400).json({ status: 'error', message: 'All fields are required.' });
     }
 
     // Email options
     const mailOptions = {
-        from: 'nyspecialcare@gmail.com',
-        to: 'bodi.tang@nyspecialcare.org', 
+        from: `"NY Special Care" <nyspecialcare@gmail.com>`,
+        to: 'contactus@nyspecialcare.org', 
         subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
-        text: `You have a new message from ${firstName} ${lastName} (${email}):\n\n${message}`,
+        text: `You have a new message from: \n\nName: ${firstName} ${lastName} \nPhone: ${phone} \nEmail: ${email} \n\nMessage: \n\n${message}`,
     };
 
     // Send the email
@@ -45,7 +45,7 @@ app.post('/send-email', (req, res) => {
         }
 
         console.log('Email sent:', info.response);
-        res.json({ status: 'success', message: 'Email sent successfully!' });
+        res.status(200).send({ message: "Email sent successfully" });
     });
 });
 
