@@ -129,10 +129,12 @@
                                 </div>
                             </div>
                         </form>
-                        <script>
+                        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+                        <script type="module">
+                            // Use axios as a global variable
                             document.getElementById('contactForm').addEventListener('submit', async (e) => {
                                 e.preventDefault();
-                        
+
                                 const formData = {
                                     firstName: document.getElementById('firstName').value,
                                     lastName: document.getElementById('lastName').value,
@@ -140,18 +142,10 @@
                                     email: document.getElementById('email').value,
                                     message: document.getElementById('message').value,
                                 };
-                        
+
                                 try {
-                                    const response = await fetch('https://165.227.120.217:8180/send-email', {
-                                        // const response = await fetch('http://localhost:3000/send-email', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json',
-                                        },
-                                        body: JSON.stringify(formData),
-                                    });
-                        
-                                    if (response.ok) {
+                                    const response = await axios.post('/api/send-email', formData);
+                                    if (response.status === 200) {
                                         alert('Email sent successfully!');
                                         document.getElementById('contactForm').reset();
                                     } else {
@@ -163,7 +157,6 @@
                                 }
                             });
                         </script>
-                        
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s" style="min-height: 400px;">
