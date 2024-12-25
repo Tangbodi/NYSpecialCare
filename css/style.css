@@ -64,7 +64,25 @@
     font-weight: normal;
     border-radius: 50px;
 }
+/* Default styling for the labels */
+.btn-outline-primary {
+    color: var(--primary); /* Default color */
+    transition: color 0.5s;
+}
 
+/* When the "Give Once" or "Monthly" radio button is checked, change label color to white */
+.btn-check:checked + .btn {
+    background-color: var(--primary); /* Background color when checked */
+    color: white; /* Text color when checked */
+    border-color: var(--primary);
+}
+
+/* Optional: Change background color when hovering over the labels */
+.btn-outline-primary:hover {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
 
 /*** Heading ***/
 h1,
