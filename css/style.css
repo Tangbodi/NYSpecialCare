@@ -12,7 +12,203 @@
     bottom: 45px;
     z-index: 99;
 }
+/*** Job Description Start ***/
 
+.job-item {
+    transition: all 0.3s ease;
+}
+
+.job-item:hover {
+    background-color: #eef9ff; 
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15); /* shadow-sm */
+
+    cursor: pointer;
+}
+
+.row {
+    /* margin-bottom: 20px; */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.job-item-icon{
+    display: flex;
+    align-items: center;
+}
+job-item-icon > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Adjust spacing between each item */
+}
+
+.job-item-icon > div i {
+    font-size: 1.2rem; /* Adjust icon size */
+    margin-left: 0px;
+    margin-right: 0px; /* Adjust spacing between icon and text */
+}
+
+.job-item-icon > div span {
+    font-weight: 400;
+    font-size: 14px;
+    font-style: normal;
+    color: rgb(23, 23, 23);
+}
+.icon-text-pos{
+    margin-left: 15px;
+}
+.job-info {
+    display: flex;
+    flex-wrap: wrap;
+    clear: both;
+    margin-left: 10px;
+}
+.ms-Stack {
+    display: flex;
+    margin-bottom: 20px;
+    width: 33.33%;
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.label, .value {
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.label {
+    width: 30%;
+    color: rgb(96, 94, 92);
+}
+
+.value {
+    width: 70%;
+    color: rgb(23, 23, 23);
+}
+
+@media (max-width: 767px) {
+    .ms-Stack {
+        width: 100%;
+    }
+    .input-group{
+        padding-left: 10px;
+        padding-right: 10px; 
+    }
+}
+@media (max-width: 767px){
+    .job-info {
+        flex-direction: column;
+        margin-left: 3%;
+    }
+    .job-item-icon{
+        flex-direction: column;
+        align-items: flex-start; /* Align items to the start of the flex container */
+    }
+    .icon-text-pos{
+        margin-left: 0px;
+    }
+}
+
+.second-span {
+    margin-left: 60px; /* Adjust the margin as needed */
+}
+
+
+.section {
+    display: flex; /* Use flexbox */
+    flex-wrap: wrap; /* Allow items to wrap */
+}
+
+.section1 {
+    flex: 2; /* Take up available space */
+    display: flex; /* Nested flex container */
+    width: 100%; /* Set width to 100% for responsiveness */
+    max-width: 822px; /* Set maximum width */
+    height: auto; /* Set height to auto to maintain aspect ratio */
+}
+
+.section2 {
+    background-color: #eef9ff; 
+    width: 100%; /* Set the width of section2 to 100% */
+    /* height: 1660px; Set the height of section2 */
+    flex: 1; /* Take up available space */
+}
+
+.nested-section1{
+    width: 100%; /* Set the width to 100% of its containing element */
+    height: auto; 
+}
+
+
+@media (max-width: 767px) {
+    .section {
+        flex-direction: column; /* Change flex direction to column */
+    }
+
+    .section2 {
+        order: 2; /* Change the order of section2 to appear after section1 */
+        height: auto; /* Set height to auto for responsiveness */
+        width: 100%; /* Set width to 100% */
+        background-color: white;
+    }
+
+    .benefit {
+        width: 100%; /* Set width to 100% for benefits */
+        margin-top: 20px; /* Add some margin for spacing */
+    }
+    
+}
+
+.ms-Stack span {
+    display: flex;
+    align-items: center;
+}
+
+.ms-Stack i {
+    margin-right: 5px; /* Adjust as needed */
+}
+.ms-Stack span i {
+    width: 20px; /* Adjust the width as needed */
+    height: 20px; /* Adjust the height as needed */
+}
+
+.benefits {
+    padding: 0 0 25px; /* equivalent to padding: 0px 0px 25px; */
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    clear: both;
+    margin-left: 3%;
+    
+}
+
+/* Media query for mobile devices */
+@media (max-width: 767px) {
+    .benefits {
+        flex: 0 0 calc(100% - 20px); /* One item per row */
+        margin-right: 0;
+        margin-bottom: 10px; /* Adjust margin as needed */
+    }
+}
+
+
+.border {
+    border: 1px solid rgba(0, 0, 0, 0.2); 
+    margin: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+  }
+  @media (max-width: 767px) {
+    .border {
+        border: none; /* Remove border on mobile */
+        box-shadow: none; /* Remove box shadow on mobile */
+        margin: 30px 0; /* Adjust margin for mobile */
+    }
+}
+
+.number-container {
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Align items vertically */
+}
+
+/*** Job Description End ***/
 
 /*** Spinner ***/
 #spinner {
