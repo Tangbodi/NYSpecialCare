@@ -1,110 +1,90 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 
 const app = express();
+app.use(cors({ origin: '*' }));
+app.use(bodyParser.json());
 
-// Middleware
-app.use(cors({ origin: '*' }));  // Enable CORS for all origins
-app.use(bodyParser.json()); // Parse JSON request bodies
+// Set your SendGrid API key
+sgMail.setApiKey(''); // Replace with your real API key
 
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     port: 465,
-//     auth: {
-//         user: 'nyspecialcare@gmail.com', // Replace with your Microsoft 365 email
-//         pass: 'qdrc sgum kqan qszy', // Use the password or app password for the mailbox
-//     }
-// });
-
-const transporter = nodemailer.createTransport({
-    host: 'smtp.sendgrid.net',
-    port: 587, // or 587 if you prefer TLS
-    secure: false, // true for port 465, false for port 587
-    auth: {
-        user: 'apikey', // this is literally the word 'apikey'
-        pass: '' // your actual SendGrid API key
-    }
-});
-
-// Endpoint to handle email submission
+// Email handler
 app.post('/api/send-email', (req, res) => {
     const { firstName, lastName, email, phone, message } = req.body;
-
-    // console.log('Received form data:', { firstName, lastName, email, phone, message });
 
     if (!firstName || !lastName || !phone || !email || !message) {
         return res.status(400).json({ status: 'error', message: 'All fields are required.' });
     }
 
-    // Email options
-    const mailOptions = {
-        from: `"NY Special Care" <nyspecialcare@gmail.com>`,
+    const msg = {
         to: 'contactus@nyspecialcare.org',
+        from: 'nyspecialcare@gmail.com',
         subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
-        text: `You have a new message from: \n\nName: ${firstName} ${lastName} \nPhone: ${phone} \nEmail: ${email} \n\nMessage: \n\n${message}`,
+        text: `You have a new message from:
+Name: ${firstName} ${lastName}
+Phone: ${phone}
+Email: ${email}
 
+Message:
+${message}`
     };
 
-    // Send the email
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending email:', error);
-            return res.status(500).json({ status: 'error', message: 'Failed to send email.' });
-        }
-
-        // console.log('Email sent:', info.response);
-        res.status(200).send({ message: "Email sent successfully" });
-    });
+    sgMail.send(msg)
+        .then(() => {
+            res.status(200).send({ message: "Email sent successfully" });
+        })
+        .catch((error) => {
+            console.error('SendGrid error:', error.response?.body || error.message);
+            res.status(500).json({ status: 'error', message: 'Failed to send email.' });
+        });
 });
 
-
-// Endpoint to handle intake form submission
+// Intake form handler
 app.post('/api/send-intake-form', (req, res) => {
-    const { childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis, parentFirstName, parentLastName, email, street, apt, city, state, zip, insurancePlan, policyNum } = req.body;
-    console.log('Received form data:', { childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis, email, street, apt, city, state, zip, insurancePlan, policyNum });
-    if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !dateOfDiagnosis || !diagnosisCode || !parentFirstName || !parentLastName || !email || !street || !city || !state || !zip || !insurancePlan || !policyNum) {
-        return res.status(400).json({ status: 'error', message: 'All fields are required.' });
-    }
-    const mailOptions = {
-        from: `"NY Special Care" <nyspecialcare@gmail.com>`,
-        to: 'contactus@nyspecialcare.org',
-        subject: `New Intake Form Submission For: ${childFirstName} ${childLastName}`,
-        text: `You have a new intake form submission:
-        \nChild's Name: ${childFirstName} ${childLastName} 
-        \nParent's Name: ${parentFirstName} ${parentLastName} 
-        \nDate of Birth: ${dateOfBirth} 
-        \nSex: ${sex} 
-        \nDiagnosis Code: ${diagnosisCode} 
-        \nDate of Diagnosis: ${dateOfDiagnosis} 
-        \nPhone: ${mobile} 
-        \nEmail: ${email} 
-        \nStreet: ${street} 
-        \nApt: ${apt} 
-        \nCity: ${city} 
-        \nState: ${state} 
-        \nZip: ${zip} 
-        \nInsurance Plan: ${insurancePlan} 
-        \nPolicy Number: ${policyNum}`
-    };
-    // Send the email
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending form:', error);
-            return res.status(500).json({ status: 'error', message: 'Failed to send form.' });
+    const data = req.body;
+    const requiredFields = ['childFirstName', 'childLastName', 'dateOfBirth', 'sex', 'mobile', 'diagnosisCode', 'dateOfDiagnosis', 'parentFirstName', 'parentLastName', 'email', 'street', 'city', 'state', 'zip', 'insurancePlan', 'policyNum'];
+
+    for (const field of requiredFields) {
+        if (!data[field]) {
+            return res.status(400).json({ status: 'error', message: `Missing field: ${field}` });
         }
-        // console.log('Email sent:', info.response);
-        res.status(200).send({ message: "Form sent successfully" });
-    });
-})
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error('Error:', err);  // Log the entire error
-    res.status(500).json({ status: 'error', message: 'Internal Server Error' });
+    }
+
+    const msg = {
+        to: 'contactus@nyspecialcare.org',
+        from: 'nyspecialcare@gmail.com',
+        subject: `New Intake Form Submission For: ${data.childFirstName} ${data.childLastName}`,
+        text: `You have a new intake form submission:
+
+Child's Name: ${data.childFirstName} ${data.childLastName}
+Parent's Name: ${data.parentFirstName} ${data.parentLastName}
+Date of Birth: ${data.dateOfBirth}
+Sex: ${data.sex}
+Diagnosis Code: ${data.diagnosisCode}
+Date of Diagnosis: ${data.dateOfDiagnosis}
+Phone: ${data.mobile}
+Email: ${data.email}
+Street: ${data.street}
+Apt: ${data.apt}
+City: ${data.city}
+State: ${data.state}
+Zip: ${data.zip}
+Insurance Plan: ${data.insurancePlan}
+Policy Number: ${data.policyNum}`
+    };
+
+    sgMail.send(msg)
+        .then(() => {
+            res.status(200).send({ message: "Form sent successfully" });
+        })
+        .catch((error) => {
+            console.error('SendGrid error:', error.response?.body || error.message);
+            res.status(500).json({ status: 'error', message: 'Failed to send form.' });
+        });
 });
 
-// Start the server
 const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on http://0.0.0.0:${PORT}`);
