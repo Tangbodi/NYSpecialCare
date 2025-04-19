@@ -9,23 +9,15 @@ const app = express();
 app.use(cors({ origin: '*' }));  // Enable CORS for all origins
 app.use(bodyParser.json()); // Parse JSON request bodies
 
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     port: 465,
-//     auth: {
-//         user: 'nyspecialcare@gmail.com', // Replace with your Microsoft 365 email
-//         pass: 'qdrc sgum kqan qszy', // Use the password or app password for the mailbox
-//     }
-// });
 const transporter = nodemailer.createTransport({
-    host: 'smtp.sendgrid.net',
-    port: 465, // or 587 if you prefer TLS
-    secure: true, // true for port 465, false for port 587
+    service: 'gmail',
+    port: 465,
     auth: {
-        user: 'apikey', // this is literally the word 'apikey'
-        pass: '' // your actual SendGrid API key
+        user: 'nyspecialcare@gmail.com', // Replace with your Microsoft 365 email
+        pass: 'qdrc sgum kqan qszy', // Use the password or app password for the mailbox
     }
 });
+
 
 // Endpoint to handle email submission
 app.post('/api/send-email', (req, res) => {
@@ -57,6 +49,8 @@ app.post('/api/send-email', (req, res) => {
         res.status(200).send({ message: "Email sent successfully" });
     });
 });
+
+
 // Endpoint to handle intake form submission
 app.post('/api/send-intake-form', (req, res) => {
     const { childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis, parentFirstName, parentLastName, email, street, apt, city, state, zip, insurancePlan, policyNum } = req.body;
