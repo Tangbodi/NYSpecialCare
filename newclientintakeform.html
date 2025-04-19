@@ -73,18 +73,21 @@
         <div class="container-xxl py-5 page-header position-relative mb-5">
             <div class="container py-5">
                 <h1 class="display-2 text-white animated slideInDown mb-4"
-                    style="margin-left: 30px; margin-right: 30px;">New Client Intake Form</h1>
+                    style="margin-left: 30px; margin-right: 30px;">New Client Intake Form </h1>
+                    <h1 class="display-5 text-white animated slideInDown mb-4"
+                    style="margin-left: 30px; margin-right: 30px;"> (客户资料登记表) </h1>
             </div>
         </div>
         <!-- Page Header End -->
-
+        <p style="margin-left: 30px; margin-right: 30px; margin-bottom: 0px;">All information entered must be in ENGLISH</p>
+        <p style="margin-left: 30px; margin-right: 30px;">所有资料必须用英文填写</p>
         <!-- New Client Form Start -->
         <div class="container py-5">
             <form id="intakeForm">
                 <!-- New Patient Section -->
                 <div class="row mb-3">
                     <div class="col-12">
-                        <h3><strong>Client Basic Information</h3>
+                        <h3><strong>Client Basic Information (客户基本信息)</h3>
                         <hr> <!-- Solid line -->
                     </div>
                 </div>
@@ -92,11 +95,11 @@
                 <!-- Child's First Name and Last Name -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="childFirstName" class="form-label">Child's First Name</label>
+                        <label for="childFirstName" class="form-label">Child's First Name (孩子名字)</label>
                         <input type="text" id="childFirstName" name="childFirstName" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="childLastName" class="form-label">Child's Last Name</label>
+                        <label for="childLastName" class="form-label">Child's Last Name (孩子姓氏)</label>
                         <input type="text" id="childLastName" name="childLastName" class="form-control" required>
                     </div>
                 </div>
@@ -104,16 +107,16 @@
                 <!-- Date of Birth and Sex -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="dateOfBirth" class="form-label">Child's Date of Birth</label>
+                        <label for="dateOfBirth" class="form-label">Child's Date of Birth (出生日期)</label>
                         <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="sex" class="form-label">Sex</label>
+                        <label for="sex" class="form-label">Sex (性别)</label>
                         <select id="sex" name="sex" class="form-control" required>
-                            <option value="" selected disabled>Select Sex</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="other">Other</option>
+                            <option value="" selected disabled>Select Sex (选择性别)</option>
+                            <option value="male">Male (男)</option>
+                            <option value="female">Female (女)</option>
+                            <option value="other">Other (其他)</option>
                         </select>
                     </div>
                 </div>
@@ -121,28 +124,28 @@
                 <!-- Diagnosis Code and Date of Diagnosis -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="diagnosisCode" class="form-label">Diagnosis Code</label>
+                        <label for="diagnosisCode" class="form-label">Diagnosis Code (诊断编码)</label>
                         <input type="text" id="diagnosisCode" name="diagnosisCode" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="dateOfDiagnosis" class="form-label">Date of Diagnosis</label>
+                        <label for="dateOfDiagnosis" class="form-label">Date of Diagnosis (诊断日期)</label>
                         <input type="date" id="dateOfDiagnosis" name="dateOfDiagnosis" class="form-control" required>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-12">
-                        <h3><strong>Parent/Guardian Basic Informantion</h3>
+                        <h3><strong>Parent/Guardian Basic Informantion (家长基本信息)</h3>
                         <hr> <!-- Solid line -->
                     </div>
                 </div>
                 <!-- Parent's Information -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="parentFirstName" class="form-label">Parent's First Name</label>
+                        <label for="parentFirstName" class="form-label">Parent's First Name (家长姓氏)</label>
                         <input type="text" id="parentFirstName" name="parentFirstName" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="parentLastName" class="form-label">Parent's Last Name</label>
+                        <label for="parentLastName" class="form-label">Parent's Last Name (家长姓氏)</label>
                         <input type="text" id="parentLastName" name="parentLastName" class="form-control" required>
                     </div>
                 </div>
@@ -150,11 +153,11 @@
                 <!-- Email and Mobile Number -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="email" class="form-label">Email Address</label>
+                        <label for="email" class="form-label">Email Address (电子邮箱)</label>
                         <input type="email" id="email" name="email" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="mobile" class="form-label">Mobile Number</label>
+                        <label for="mobile" class="form-label">Mobile Number (联系电话)</label>
                         <input type="tel" id="mobile" name="mobile" class="form-control" required>
                     </div>
                 </div>
@@ -162,11 +165,11 @@
                 <!-- Address Information -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="street" class="form-label">Street Address</label>
+                        <label for="street" class="form-label">Street Address (街道)</label>
                         <input type="text" id="street" name="street" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="apt" class="form-label">Apt / Suite</label>
+                        <label for="apt" class="form-label">Apt / Suite (公寓)</label>
                         <input type="text" id="apt" name="apt" class="form-control">
                     </div>
                 </div>
@@ -174,37 +177,37 @@
                 <!-- City, State, and Zip -->
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <label for="city" class="form-label">City</label>
+                        <label for="city" class="form-label">City (居住城市)</label>
                         <input type="text" id="city" name="city" class="form-control" required>
                     </div>
                     <div class="col-md-4">
-                        <label for="state" class="form-label">State</label>
+                        <label for="state" class="form-label">State (州)</label>
                         <input type="text" id="state" name="state" class="form-control" required>
                     </div>
                     <div class="col-md-4">
-                        <label for="zip" class="form-label">Zip Code</label>
+                        <label for="zip" class="form-label">Zip Code (邮编)</label>
                         <input type="text" id="zip" name="zip" class="form-control" required>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-12">
-                        <h3><strong>Billing Informantion</h3>
+                        <h3><strong>Billing Informantion (账单信息)</h3>
                         <hr> <!-- Solid line -->
                     </div>
                 </div>
                 <!-- Insurance Information -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="insurancePlan" class="form-label">Insurance Plan</label>
+                        <label for="insurancePlan" class="form-label">Insurance Plan (保险计划)</label>
                         <input type="text" id="insurancePlan" name="insurancePlan" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="policyNum" class="form-label">Policy Number</label>
+                        <label for="policyNum" class="form-label">Policy Number (保险号码)</label>
                         <input type="text" id="policyNum" name="policyNum" class="form-control" required>
                     </div>
                 </div>
             
-                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                <button type="submit" class="btn btn-primary btn-lg">Submit (提交)</button>
             </form>
             
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
