@@ -14,7 +14,7 @@ var smtpTransport = nodemailer.createTransport({
     port: 2525,
     auth: {
         user: 'nyspecialcare.org', // Replace with your Microsoft 365 email
-        pass: 'DBCFLBZb5RakG0I9', // Use the password or app password for the mailbox
+        pass: '', // Use the password or app password for the mailbox
     }
 });
 
