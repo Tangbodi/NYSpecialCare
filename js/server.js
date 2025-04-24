@@ -77,7 +77,13 @@ app.post('/api/send-intake-form', (req, res) => {
         \nState: ${state} 
         \nZip: ${zip} 
         \nInsurance Plan: ${insurancePlan} 
-        \nPolicy Number: ${policyNum}`
+        \nPolicy Number: ${policyNum}`,
+        attachments: [
+            {
+                filename: 'intake-form.pdf', // Name of the file
+                path: file.path // Path to the file, ensure this is the correct path
+            }
+        ]
     };
     // Send the email
     smtpTransport.sendMail(mailOptions, (error, info) => {

@@ -74,12 +74,13 @@
             <div class="container py-5">
                 <h1 class="display-2 text-white animated slideInDown mb-4"
                     style="margin-left: 30px; margin-right: 30px;">New Client Intake Form </h1>
-                    <h1 class="display-5 text-white animated slideInDown mb-4"
+                <h1 class="display-5 text-white animated slideInDown mb-4"
                     style="margin-left: 30px; margin-right: 30px;"> (客户资料登记表) </h1>
             </div>
         </div>
         <!-- Page Header End -->
-        <p style="margin-left: 30px; margin-right: 30px; margin-bottom: 0px;">All information entered must be in ENGLISH</p>
+        <p style="margin-left: 30px; margin-right: 30px; margin-bottom: 0px;">All information entered must be in ENGLISH
+        </p>
         <p style="margin-left: 30px; margin-right: 30px;">所有资料必须用英文填写</p>
         <!-- New Client Form Start -->
         <div class="container py-5">
@@ -91,7 +92,7 @@
                         <hr> <!-- Solid line -->
                     </div>
                 </div>
-            
+
                 <!-- Child's First Name and Last Name -->
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -103,7 +104,7 @@
                         <input type="text" id="childLastName" name="childLastName" class="form-control" required>
                     </div>
                 </div>
-            
+
                 <!-- Date of Birth and Sex -->
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -120,7 +121,7 @@
                         </select>
                     </div>
                 </div>
-            
+
                 <!-- Diagnosis Code and Date of Diagnosis -->
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -132,6 +133,60 @@
                         <input type="date" id="dateOfDiagnosis" name="dateOfDiagnosis" class="form-control" required>
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="files" class="form-label">Upload Pictures (上传图片)</label>
+                        <input type="file" id="files" name="files" class="form-control" multiple>
+                        <div id="fileNamesList"></div>
+                
+                        <script type="module">
+                            const filesInput = document.getElementById('files');
+                            const fileNamesList = document.getElementById('fileNamesList');
+                            let selectedFiles = [];
+                
+                            filesInput.addEventListener('change', function (event) {
+                                const newFiles = Array.from(event.target.files);
+                
+                                // Add only new files (by name) to avoid duplicates
+                                newFiles.forEach(file => {
+                                    if (!selectedFiles.some(f => f.name === file.name)) {
+                                        selectedFiles.push(file);
+                                    }
+                                });
+                
+                                renderFileList();
+                            });
+                
+                            function renderFileList() {
+                                if (selectedFiles.length === 0) {
+                                    fileNamesList.innerHTML = '';
+                                    filesInput.value = ''; // Clear input if all files removed
+                                    return;
+                                }
+                
+                                const fileListHTML = selectedFiles.map((file, i) => `
+                                    <div class="file-item" data-index="${i}" style="margin-bottom: 10px;">
+                                        <span>${file.name}</span>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeFile(${i})">Delete</button>
+                                    </div>
+                                `);
+                
+                                fileNamesList.innerHTML = `
+                                    <div style="margin-top: 10px;">
+                                        ${fileListHTML.join('')}
+                                    </div>
+                                `;
+                            }
+                
+                            // Make the function globally accessible
+                            window.removeFile = function (index) {
+                                selectedFiles.splice(index, 1);
+                                renderFileList();
+                            };
+                        </script>
+                    </div>
+                </div>
+                
                 <div class="row mb-3">
                     <div class="col-12">
                         <h3><strong>Parent/Guardian Basic Informantion (家长基本信息)</h3>
@@ -149,7 +204,7 @@
                         <input type="text" id="parentLastName" name="parentLastName" class="form-control" required>
                     </div>
                 </div>
-            
+
                 <!-- Email and Mobile Number -->
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -161,7 +216,7 @@
                         <input type="tel" id="mobile" name="mobile" class="form-control" required>
                     </div>
                 </div>
-            
+
                 <!-- Address Information -->
                 <div class="row mb-3">
                     <div class="col-md-6">
@@ -173,7 +228,7 @@
                         <input type="text" id="apt" name="apt" class="form-control">
                     </div>
                 </div>
-            
+
                 <!-- City, State, and Zip -->
                 <div class="row mb-3">
                     <div class="col-md-4">
@@ -206,10 +261,10 @@
                         <input type="text" id="policyNum" name="policyNum" class="form-control" required>
                     </div>
                 </div>
-            
+
                 <button type="submit" class="btn btn-primary btn-lg">Submit (提交)</button>
             </form>
-            
+
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script type="module">
                 // Use axios as a global variable
