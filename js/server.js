@@ -2,62 +2,21 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
-
+const db = require('./db');
 const app = express();
 
 // Middleware
 app.use(cors({ origin: '*' }));  // Enable CORS for all origins
 app.use(bodyParser.json()); // Parse JSON request bodies
 
-var smtpTransport = nodemailer.createTransport({
-    host: 'mail.smtp2go.com',
-    port: 2525,
-    auth: {
-        user: 'nyspecialcare.org', // Replace with your Microsoft 365 email
-        pass: '', // Use the password or app password for the mailbox
-    }
-});
-
-
-// Endpoint to handle email submission
-app.post('/api/send-email', (req, res) => {
-    const { firstName, lastName, email, phone, message } = req.body;
-
-    // console.log('Received form data:', { firstName, lastName, email, phone, message });
-
-    if (!firstName || !lastName || !phone || !email || !message) {
-        return res.status(400).json({ status: 'error', message: 'All fields are required.' });
-    }
-
-    // Email options
-    const mailOptions = {
-        from: `"NY Special Care" <contactus@nyspecialcare.org>`,
-        to: 'contactus@nyspecialcare.org',
-        subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
-        text: `You have a new message from: \n\nName: ${firstName} ${lastName} \nPhone: ${phone} \nEmail: ${email} \n\nMessage: \n\n${message}`,
-
-    };
-
-    // Send the email
-    smtpTransport.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending email:', error);
-            return res.status(500).json({ status: 'error', message: 'Failed to send email.' });
-        }
-
-        // console.log('Email sent:', info.response);
-        res.status(200).send({ message: "Email sent successfully" });
-    });
-});
-
-
 // Endpoint to handle intake form submission
 app.post('/api/send-intake-form', (req, res) => {
     const { childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis, parentFirstName, parentLastName, email, street, apt, city, state, zip, insurancePlan, policyNum } = req.body;
     console.log('Received form data:', { childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis, email, street, apt, city, state, zip, insurancePlan, policyNum });
-    if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !dateOfDiagnosis || !diagnosisCode || !parentFirstName || !parentLastName || !email || !street || !city || !state || !zip || !insurancePlan || !policyNum) {
-        return res.status(400).json({ status: 'error', message: 'All fields are required.' });
+    if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !dateOfDiagnosis || !diagnosisCode || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
+        return res.status(400).json({ status: 'error', message: 'Required fields are missing.' });
     }
+
     const mailOptions = {
         from: `"NY Special Care" <contactus@nyspecialcare.org>`,
         to: 'contactus@nyspecialcare.org',
@@ -77,13 +36,7 @@ app.post('/api/send-intake-form', (req, res) => {
         \nState: ${state} 
         \nZip: ${zip} 
         \nInsurance Plan: ${insurancePlan} 
-        \nPolicy Number: ${policyNum}`,
-        attachments: [
-            {
-                filename: 'intake-form.pdf', // Name of the file
-                path: file.path // Path to the file, ensure this is the correct path
-            }
-        ]
+        \nPolicy Number: ${policyNum}`
     };
     // Send the email
     smtpTransport.sendMail(mailOptions, (error, info) => {
@@ -91,8 +44,24 @@ app.post('/api/send-intake-form', (req, res) => {
             console.error('Error sending form:', error);
             return res.status(500).json({ status: 'error', message: 'Failed to send form.' });
         }
-        // console.log('Email sent:', info.response);
-        res.status(200).send({ message: "Form sent successfully" });
+
+        const insertQuery = `
+            INSERT INTO intake_forms (
+                child_first_name, child_last_name, child_date_of_birth, child_sex, mobile, diagnosis_code, date_of_diagnosis,
+                parent_first_name, parent_last_name, email, street, apt, city, state, zip, insurance_plan, policy_number
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+            ;
+        db.query(insertQuery, [
+            childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis,
+            parentFirstName, parentLastName, email, street, apt, city, state, zip, insurancePlan, policyNum
+        ], (err, results) => {
+            if (err) {
+                console.error('Database insert error:', err);
+                return res.status(500).json({ status: 'error', message: 'Form sent, but failed to save to database.' });
+            }
+
+            return res.status(200).json({ status: 'success', message: 'Form submitted and saved successfully.' });
+        });
     });
 })
 // Error handling middleware

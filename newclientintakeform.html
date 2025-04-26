@@ -138,46 +138,46 @@
                         <label for="files" class="form-label">Upload Pictures (上传图片)</label>
                         <input type="file" id="files" name="files" class="form-control" multiple>
                         <div id="fileNamesList"></div>
-                
+
                         <script type="module">
                             const filesInput = document.getElementById('files');
                             const fileNamesList = document.getElementById('fileNamesList');
                             let selectedFiles = [];
-                
+
                             filesInput.addEventListener('change', function (event) {
                                 const newFiles = Array.from(event.target.files);
-                
+
                                 // Add only new files (by name) to avoid duplicates
                                 newFiles.forEach(file => {
                                     if (!selectedFiles.some(f => f.name === file.name)) {
                                         selectedFiles.push(file);
                                     }
                                 });
-                
+
                                 renderFileList();
                             });
-                
+
                             function renderFileList() {
                                 if (selectedFiles.length === 0) {
                                     fileNamesList.innerHTML = '';
                                     filesInput.value = ''; // Clear input if all files removed
                                     return;
                                 }
-                
+
                                 const fileListHTML = selectedFiles.map((file, i) => `
                                     <div class="file-item" data-index="${i}" style="margin-bottom: 10px;">
                                         <span>${file.name}</span>
                                         <button type="button" class="btn btn-danger btn-sm" onclick="removeFile(${i})">Delete</button>
                                     </div>
                                 `);
-                
+
                                 fileNamesList.innerHTML = `
                                     <div style="margin-top: 10px;">
                                         ${fileListHTML.join('')}
                                     </div>
                                 `;
                             }
-                
+
                             // Make the function globally accessible
                             window.removeFile = function (index) {
                                 selectedFiles.splice(index, 1);
@@ -186,7 +186,7 @@
                         </script>
                     </div>
                 </div>
-                
+
                 <div class="row mb-3">
                     <div class="col-12">
                         <h3><strong>Parent/Guardian Basic Informantion (家长基本信息)</h3>
@@ -264,12 +264,30 @@
 
                 <button type="submit" class="btn btn-primary btn-lg">Submit (提交)</button>
             </form>
+            <div id="loadingOverlay" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+">
+                Submitting...
+            </div>
 
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script type="module">
                 // Use axios as a global variable
                 document.getElementById('intakeForm').addEventListener('submit', async (e) => {
                     e.preventDefault();
+
+                    const loadingOverlay = document.getElementById('loadingOverlay');
+                    loadingOverlay.style.display = 'flex'; // Show overlay
 
                     const formData = {
                         childFirstName: document.getElementById('childFirstName').value,
@@ -283,10 +301,10 @@
                         parentLastName: document.getElementById('parentLastName').value,
                         email: document.getElementById('email').value,
                         street: document.getElementById('street').value,
-                        apt: document.getElementById('apt').value,
-                        city: document.getElementById('city').value,
-                        state: document.getElementById('state').value,
-                        zip: document.getElementById('zip').value,
+                        apt: document.getElementById('apt').value || '',
+                        city: document.getElementById('city').value || '',
+                        state: document.getElementById('state').value || '',
+                        zip: document.getElementById('zip').value || '',
                         insurancePlan: document.getElementById('insurancePlan').value,
                         policyNum: document.getElementById('policyNum').value,
                     };
@@ -302,8 +320,11 @@
                     } catch (error) {
                         console.error('Error:', error);
                         alert('An error occurred. Please try again.');
+                    } finally {
+                        loadingOverlay.style.display = 'none'; // Hide overlay
                     }
                 });
+
             </script>
         </div>
         <!-- New Client Form End -->
