@@ -1,22 +1,20 @@
 const mysql = require('mysql2');
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
   host: 'db-mysql-nyc3-05415-do-user-14241718-0.c.db.ondigitalocean.com',
   user: 'doadmin',
-  password: '',
+  password: '', 
   database: 'nyspecialcare',
   port: 25060,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
   ssl: {
     rejectUnauthorized: false
-}
+  },
+  enableKeepAlive: true,
+  keepAliveInitialDelay: 10000 
 });
 
-connection.connect(err => {
-  if (err) {
-    console.error('Connection error:', err.stack);
-    return;
-  }
-  console.log('Connected as id ' + connection.threadId);
-});
+module.exports = pool.promise(); 
 
-module.exports = connection;
