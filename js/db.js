@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+import mysql from 'mysql2/promise'; // Note: using promise variant here
 
 const pool = mysql.createPool({
   host: 'db-mysql-nyc3-05415-do-user-14241718-0.c.db.ondigitalocean.com',
@@ -9,12 +9,10 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
-  ssl: {
-    rejectUnauthorized: false
-  },
   enableKeepAlive: true,
-  keepAliveInitialDelay: 10000 
+  keepAliveInitialDelay: 10000
 });
 
-module.exports = pool.promise(); 
+export default pool;
+
 

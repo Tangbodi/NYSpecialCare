@@ -1,115 +1,114 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-var nodemailer = require('nodemailer');
-const db = require('./db');
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import nodemailer from 'nodemailer';
+import db from './db.js';
+
 const app = express();
 
 // Middleware
-app.use(cors({ origin: '*' }));  // Enable CORS for all origins
-app.use(bodyParser.json()); // Parse JSON request bodies
+app.use(cors({ origin: '*' }));
+app.use(bodyParser.json());
 
-var smtpTransport = nodemailer.createTransport({
-    host: 'mail.smtp2go.com',
-    port: 2525,
-    auth: {
-        user: 'nyspecialcare.org', // Replace with your Microsoft 365 email
-        pass: '', // Use the password or app password for the mailbox
-    }
+// Setup mail transporter
+const smtpTransport = nodemailer.createTransport({
+  host: 'mail.smtp2go.com',
+  port: 2525,
+  auth: {
+    user: 'nyspecialcare.org',
+    pass: '' // make sure to load this from environment if sensitive
+  }
 });
 
-
-// Endpoint to handle email submission
+// Contact form endpoint
 app.post('/api/send-email', (req, res) => {
-    const { firstName, lastName, email, phone, message } = req.body;
+  const { firstName, lastName, email, phone, message } = req.body;
 
-    // console.log('Received form data:', { firstName, lastName, email, phone, message });
+  if (!firstName || !lastName || !phone || !email || !message) {
+    return res.status(400).json({ status: 'error', message: 'All fields are required.' });
+  }
 
-    if (!firstName || !lastName || !phone || !email || !message) {
-        return res.status(400).json({ status: 'error', message: 'All fields are required.' });
+  const mailOptions = {
+    from: `"NY Special Care" <contactus@nyspecialcare.org>`,
+    to: 'contactus@nyspecialcare.org',
+    subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
+    text: `You have a new message:\n\nName: ${firstName} ${lastName}\nPhone: ${phone}\nEmail: ${email}\n\nMessage:\n\n${message}`
+  };
+
+  smtpTransport.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error sending email:', error);
+      return res.status(500).json({ status: 'error', message: 'Failed to send email.' });
     }
-
-    // Email options
-    const mailOptions = {
-        from: `"NY Special Care" <contactus@nyspecialcare.org>`,
-        to: 'contactus@nyspecialcare.org',
-        subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
-        text: `You have a new message from: \n\nName: ${firstName} ${lastName} \nPhone: ${phone} \nEmail: ${email} \n\nMessage: \n\n${message}`,
-
-    };
-
-    // Send the email
-    smtpTransport.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending email:', error);
-            return res.status(500).json({ status: 'error', message: 'Failed to send email.' });
-        }
-
-        // console.log('Email sent:', info.response);
-        res.status(200).send({ message: "Email sent successfully" });
-    });
+    res.status(200).send({ message: 'Email sent successfully' });
+  });
 });
 
+// Intake form endpoint
+app.post('/api/send-intake-form', async (req, res) => {
+  const {
+    childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis,
+    parentFirstName, parentLastName, email, street, apt, city, state, zip,
+    insurancePlan, policyNum
+  } = req.body;
 
-// Endpoint to handle intake form submission
-app.post('/api/send-intake-form', (req, res) => {
-    const { childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis, parentFirstName, parentLastName, email, street, apt, city, state, zip, insurancePlan, policyNum } = req.body;
-    console.log('Received form data:', { childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis, email, street, apt, city, state, zip, insurancePlan, policyNum });
-    if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !dateOfDiagnosis || !diagnosisCode || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
-        return res.status(400).json({ status: 'error', message: 'Required fields are missing.' });
+  if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !dateOfDiagnosis ||
+      !diagnosisCode || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
+    return res.status(400).json({ status: 'error', message: 'Required fields are missing.' });
+  }
+
+  const mailOptions = {
+    from: `"NY Special Care" <contactus@nyspecialcare.org>`,
+    to: 'contactus@nyspecialcare.org',
+    subject: `New Intake Form Submission For: ${childFirstName} ${childLastName}`,
+    text: `
+      You have a new intake form submission:
+      Child: ${childFirstName} ${childLastName}
+      Parent: ${parentFirstName} ${parentLastName}
+      DOB: ${dateOfBirth}
+      Sex: ${sex}
+      Diagnosis: ${diagnosisCode}
+      Diagnosis Date: ${dateOfDiagnosis}
+      Phone: ${mobile}
+      Email: ${email}
+      Address: ${street} ${apt}, ${city}, ${state}, ${zip}
+      Insurance: ${insurancePlan}
+      Policy #: ${policyNum}
+    `
+  };
+
+  smtpTransport.sendMail(mailOptions, async (error, info) => {
+    if (error) {
+      console.error('Error sending form email:', error);
+      return res.status(500).json({ status: 'error', message: 'Failed to send form.' });
     }
 
-    const mailOptions = {
-        from: `"NY Special Care" <contactus@nyspecialcare.org>`,
-        to: 'contactus@nyspecialcare.org',
-        subject: `New Intake Form Submission For: ${childFirstName} ${childLastName}`,
-        text: `You have a new intake form submission:
-        \nChild's Name: ${childFirstName} ${childLastName} 
-        \nParent's Name: ${parentFirstName} ${parentLastName} 
-        \nDate of Birth: ${dateOfBirth} 
-        \nSex: ${sex} 
-        \nDiagnosis Code: ${diagnosisCode} 
-        \nDate of Diagnosis: ${dateOfDiagnosis} 
-        \nPhone: ${mobile} 
-        \nEmail: ${email} 
-        \nStreet: ${street} 
-        \nApt: ${apt} 
-        \nCity: ${city} 
-        \nState: ${state} 
-        \nZip: ${zip} 
-        \nInsurance Plan: ${insurancePlan} 
-        \nPolicy Number: ${policyNum}`
-    };
-    // Send the email
-    smtpTransport.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending form:', error);
-            return res.status(500).json({ status: 'error', message: 'Failed to send form.' });
-        }
+    try {
+      const insertQuery = `
+        INSERT INTO intake_forms (
+          child_first_name, child_last_name, child_date_of_birth, child_sex, mobile,
+          diagnosis_code, date_of_diagnosis, parent_first_name, parent_last_name,
+          email, street, apt, city, state, zip, insurance_plan, policy_number
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
 
-        const insertQuery = `
-            INSERT INTO intake_forms (
-                child_first_name, child_last_name, child_date_of_birth, child_sex, mobile, diagnosis_code, date_of_diagnosis,
-                parent_first_name, parent_last_name, email, street, apt, city, state, zip, insurance_plan, policy_number
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-            ;
-        db.query(insertQuery, [
-            childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis,
-            parentFirstName, parentLastName, email, street, apt, city, state, zip, insurancePlan, policyNum
-        ], (err, results) => {
-            if (err) {
-                console.error('Database insert error:', err);
-                return res.status(500).json({ status: 'error', message: 'Form sent, but failed to save to database.' });
-            }
+      await db.query(insertQuery, [
+        childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis,
+        parentFirstName, parentLastName, email, street, apt, city, state, zip, insurancePlan, policyNum
+      ]);
 
-            return res.status(200).json({ status: 'success', message: 'Form submitted and saved successfully.' });
-        });
-    });
-})
-// Error handling middleware
+      res.status(200).json({ status: 'success', message: 'Form submitted and saved successfully.' });
+    } catch (dbError) {
+      console.error('Database insert error:', dbError);
+      res.status(500).json({ status: 'error', message: 'Form sent, but failed to save to database.' });
+    }
+  });
+});
+
+// Global error handler
 app.use((err, req, res, next) => {
-    console.error('Error:', err);  // Log the entire error
-    res.status(500).json({ status: 'error', message: 'Internal Server Error' });
+  console.error('Unhandled Error:', err);
+  res.status(500).json({ status: 'error', message: 'Internal Server Error' });
 });
 
 // Start the server
