@@ -96,11 +96,13 @@
                 <!-- Child's First Name and Last Name -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="childFirstName" class="form-label">Child's First Name (孩子名字)</label>
+                        <label for="childFirstName" class="form-label">Child's First Name (孩子名字) <span
+                                style="color: red;">*</span></label>
                         <input type="text" id="childFirstName" name="childFirstName" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="childLastName" class="form-label">Child's Last Name (孩子姓氏)</label>
+                        <label for="childLastName" class="form-label">Child's Last Name (孩子姓氏) <span
+                                style="color: red;">*</span></label>
                         <input type="text" id="childLastName" name="childLastName" class="form-control" required>
                     </div>
                 </div>
@@ -108,11 +110,12 @@
                 <!-- Date of Birth and Sex -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="dateOfBirth" class="form-label">Child's Date of Birth (出生日期)</label>
+                        <label for="dateOfBirth" class="form-label">Child's Date of Birth (出生日期) <span
+                                style="color: red;">*</span></label>
                         <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="sex" class="form-label">Sex (性别)</label>
+                        <label for="sex" class="form-label">Sex (性别) <span style="color: red;">*</span></label>
                         <select id="sex" name="sex" class="form-control" required>
                             <option value="" selected disabled>Select Sex (选择性别)</option>
                             <option value="male">Male (男)</option>
@@ -125,68 +128,16 @@
                 <!-- Diagnosis Code and Date of Diagnosis -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="diagnosisCode" class="form-label">Diagnosis Code (诊断编码)</label>
+                        <label for="diagnosisCode" class="form-label">Diagnosis Code (诊断编码) <span
+                                style="color: red;">*</span></label>
                         <input type="text" id="diagnosisCode" name="diagnosisCode" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="dateOfDiagnosis" class="form-label">Date of Diagnosis (诊断日期)</label>
+                        <label for="dateOfDiagnosis" class="form-label">Date of Diagnosis (诊断日期) <span
+                                style="color: red;">*</span></label>
                         <input type="date" id="dateOfDiagnosis" name="dateOfDiagnosis" class="form-control" required>
                     </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <label for="files" class="form-label">Upload Pictures (上传图片)</label>
-                        <input type="file" id="files" name="files" class="form-control" multiple>
-                        <div id="fileNamesList"></div>
-
-                        <script type="module">
-                            const filesInput = document.getElementById('files');
-                            const fileNamesList = document.getElementById('fileNamesList');
-                            let selectedFiles = [];
-
-                            filesInput.addEventListener('change', function (event) {
-                                const newFiles = Array.from(event.target.files);
-
-                                // Add only new files (by name) to avoid duplicates
-                                newFiles.forEach(file => {
-                                    if (!selectedFiles.some(f => f.name === file.name)) {
-                                        selectedFiles.push(file);
-                                    }
-                                });
-
-                                renderFileList();
-                            });
-
-                            function renderFileList() {
-                                if (selectedFiles.length === 0) {
-                                    fileNamesList.innerHTML = '';
-                                    filesInput.value = ''; // Clear input if all files removed
-                                    return;
-                                }
-
-                                const fileListHTML = selectedFiles.map((file, i) => `
-                                    <div class="file-item" data-index="${i}" style="margin-bottom: 10px;">
-                                        <span>${file.name}</span>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="removeFile(${i})">Delete</button>
-                                    </div>
-                                `);
-
-                                fileNamesList.innerHTML = `
-                                    <div style="margin-top: 10px;">
-                                        ${fileListHTML.join('')}
-                                    </div>
-                                `;
-                            }
-
-                            // Make the function globally accessible
-                            window.removeFile = function (index) {
-                                selectedFiles.splice(index, 1);
-                                renderFileList();
-                            };
-                        </script>
-                    </div>
-                </div>
-
                 <div class="row mb-3">
                     <div class="col-12">
                         <h3><strong>Parent/Guardian Basic Informantion (家长基本信息)</h3>
@@ -196,11 +147,13 @@
                 <!-- Parent's Information -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="parentFirstName" class="form-label">Parent's First Name (家长名字)</label>
+                        <label for="parentFirstName" class="form-label">Parent's First Name (家长名字) <span
+                                style="color: red;">*</span></label>
                         <input type="text" id="parentFirstName" name="parentFirstName" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="parentLastName" class="form-label">Parent's Last Name (家长姓氏)</label>
+                        <label for="parentLastName" class="form-label">Parent's Last Name (家长姓氏) <span
+                                style="color: red;">*</span></label>
                         <input type="text" id="parentLastName" name="parentLastName" class="form-control" required>
                     </div>
                 </div>
@@ -208,11 +161,13 @@
                 <!-- Email and Mobile Number -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="email" class="form-label">Email Address (电子邮箱)</label>
+                        <label for="email" class="form-label">Email Address (电子邮箱) <span
+                                style="color: red;">*</span></label>
                         <input type="email" id="email" name="email" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="mobile" class="form-label">Mobile Number (联系电话)</label>
+                        <label for="mobile" class="form-label">Mobile Number (联系电话) <span
+                                style="color: red;">*</span></label>
                         <input type="tel" id="mobile" name="mobile" class="form-control" required>
                     </div>
                 </div>
@@ -220,7 +175,8 @@
                 <!-- Address Information -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="street" class="form-label">Street Address (街道)</label>
+                        <label for="street" class="form-label">Street Address (街道) <span
+                                style="color: red;">*</span></label>
                         <input type="text" id="street" name="street" class="form-control" required>
                     </div>
                     <div class="col-md-6">
@@ -233,15 +189,15 @@
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label for="city" class="form-label">City (居住城市)</label>
-                        <input type="text" id="city" name="city" class="form-control" required>
+                        <input type="text" id="city" name="city" class="form-control">
                     </div>
                     <div class="col-md-4">
                         <label for="state" class="form-label">State (州)</label>
-                        <input type="text" id="state" name="state" class="form-control" required>
+                        <input type="text" id="state" name="state" class="form-control">
                     </div>
                     <div class="col-md-4">
                         <label for="zip" class="form-label">Zip Code (邮编)</label>
-                        <input type="text" id="zip" name="zip" class="form-control" required>
+                        <input type="text" id="zip" name="zip" class="form-control">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -253,11 +209,13 @@
                 <!-- Insurance Information -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <label for="insurancePlan" class="form-label">Insurance Plan (保险计划)</label>
+                        <label for="insurancePlan" class="form-label">Insurance Plan (保险计划) <span
+                                style="color: red;">*</span></label>
                         <input type="text" id="insurancePlan" name="insurancePlan" class="form-control" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="policyNum" class="form-label">Policy Number (保险号码)</label>
+                        <label for="policyNum" class="form-label">Policy Number (保险号码) <span
+                                style="color: red;">*</span></label>
                         <input type="text" id="policyNum" name="policyNum" class="form-control" required>
                     </div>
                 </div>
@@ -265,18 +223,18 @@
                 <button type="submit" class="btn btn-primary btn-lg">Submit (提交)</button>
             </form>
             <div id="loadingOverlay" style="
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(255, 255, 255, 0.8);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-">
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        ">
                 Submitting...
             </div>
 
