@@ -1,8 +1,8 @@
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import nodemailer from 'nodemailer';
-import db from './db.js';
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+var nodemailer = require('nodemailer');
+const db = require('./db');
 
 const app = express();
 

@@ -1,18 +1,30 @@
-import mysql from 'mysql2/promise'; // Note: using promise variant here
+const mysql = require('mysql2');
 
 const pool = mysql.createPool({
   host: 'db-mysql-nyc3-05415-do-user-14241718-0.c.db.ondigitalocean.com',
   user: 'doadmin',
-  password: '', 
+  password: '',
   database: 'nyspecialcare',
   port: 25060,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 10000
+  queueLimit: 0
 });
 
-export default pool;
+const promisePool = pool.promise();
+
+// Test the connection
+promisePool.getConnection()
+  .then((connection) => {
+    console.log('Database connected successfully!');
+    connection.release();
+  })
+  .catch((err) => {
+    console.error('Database connection failed:', err);
+  });
+
+module.exports = promisePool;
+
+
 
 
