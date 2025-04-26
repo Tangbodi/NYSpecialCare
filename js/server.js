@@ -9,6 +9,48 @@ const app = express();
 app.use(cors({ origin: '*' }));  // Enable CORS for all origins
 app.use(bodyParser.json()); // Parse JSON request bodies
 
+var smtpTransport = nodemailer.createTransport({
+    host: 'mail.smtp2go.com',
+    port: 2525,
+    auth: {
+        user: 'nyspecialcare.org', // Replace with your Microsoft 365 email
+        pass: '', // Use the password or app password for the mailbox
+    }
+});
+
+
+// Endpoint to handle email submission
+app.post('/api/send-email', (req, res) => {
+    const { firstName, lastName, email, phone, message } = req.body;
+
+    // console.log('Received form data:', { firstName, lastName, email, phone, message });
+
+    if (!firstName || !lastName || !phone || !email || !message) {
+        return res.status(400).json({ status: 'error', message: 'All fields are required.' });
+    }
+
+    // Email options
+    const mailOptions = {
+        from: `"NY Special Care" <contactus@nyspecialcare.org>`,
+        to: 'contactus@nyspecialcare.org',
+        subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
+        text: `You have a new message from: \n\nName: ${firstName} ${lastName} \nPhone: ${phone} \nEmail: ${email} \n\nMessage: \n\n${message}`,
+
+    };
+
+    // Send the email
+    smtpTransport.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error sending email:', error);
+            return res.status(500).json({ status: 'error', message: 'Failed to send email.' });
+        }
+
+        // console.log('Email sent:', info.response);
+        res.status(200).send({ message: "Email sent successfully" });
+    });
+});
+
+
 // Endpoint to handle intake form submission
 app.post('/api/send-intake-form', (req, res) => {
     const { childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis, parentFirstName, parentLastName, email, street, apt, city, state, zip, insurancePlan, policyNum } = req.body;
