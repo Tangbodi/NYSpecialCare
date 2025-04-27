@@ -53,26 +53,40 @@ app.post('/api/send-intake-form', async (req, res) => {
   } = req.body;
 
   if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !dateOfDiagnosis ||
-      !diagnosisCode || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
+    !diagnosisCode || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
     return res.status(400).json({ status: 'error', message: 'Required fields are missing.' });
   }
+  // Helper to capitalize first letter
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+  }
 
+  const capitalizedChildFirstName = capitalizeFirstLetter(childFirstName);
+  const capitalizedChildLastName = capitalizeFirstLetter(childLastName);
+  const capitalizedParentFirstName = capitalizeFirstLetter(parentFirstName);
+  const capitalizedParentLastName = capitalizeFirstLetter(parentLastName);
+  const capitalizedInsurancePlan = capitalizeFirstLetter(insurancePlan);
+  
   const mailOptions = {
     from: `"NY Special Care" <contactus@nyspecialcare.org>`,
     to: 'contactus@nyspecialcare.org',
     subject: `New Intake Form Submission For: ${childFirstName} ${childLastName}`,
     text: `
       You have a new intake form submission:
-      Child: ${childFirstName} ${childLastName}
-      Parent: ${parentFirstName} ${parentLastName}
+      Child: ${capitalizedChildFirstName} ${capitalizedChildLastName}
+      Parent: ${capitalizedParentFirstName} ${capitalizedParentLastName}
       DOB: ${dateOfBirth}
       Sex: ${sex}
       Diagnosis: ${diagnosisCode}
       Diagnosis Date: ${dateOfDiagnosis}
       Phone: ${mobile}
       Email: ${email}
-      Address: ${street} ${apt}, ${city}, ${state}, ${zip}
-      Insurance: ${insurancePlan}
+      Street: ${street} 
+      Apt: ${apt} 
+      City: ${city} 
+      State: ${state} 
+      Zip: ${zip} 
+      Insurance: ${capitalizedInsurancePlan}
       Policy #: ${policyNum}
     `
   };
@@ -114,5 +128,5 @@ app.use((err, req, res, next) => {
 // Start the server
 const PORT = 3000;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is running on http://0.0.0.0:${PORT}`);
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
