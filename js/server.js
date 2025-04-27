@@ -107,8 +107,8 @@ app.post('/api/send-intake-form', async (req, res) => {
       `;
 
       await db.query(insertQuery, [
-        childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis,
-        parentFirstName, parentLastName, email, street, apt, city, state, zip, insurancePlan, policyNum
+        capitalizedChildFirstName, capitalizedChildLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis,
+        capitalizedParentFirstName, capitalizedParentLastName, email, street, apt, city, state, zip, capitalizedInsurancePlan, policyNum
       ]);
 
       res.status(200).json({ status: 'success', message: 'Form submitted and saved successfully.' });
