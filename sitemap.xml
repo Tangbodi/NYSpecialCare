@@ -4,7 +4,15 @@
   <!-- Home Page -->
   <url>
     <loc>https://www.nyspecialcare.org/</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-04-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- ABA Service Page -->
+  <url>
+    <loc>https://www.nyspecialcare.org/abaservice.html</loc>
+    <lastmod>2025-04-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -12,7 +20,7 @@
   <!-- About Us Page -->
   <url>
     <loc>https://www.nyspecialcare.org/about.html</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -20,7 +28,7 @@
   <!-- Contact Us Page -->
   <url>
     <loc>https://www.nyspecialcare.org/contact.html</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -28,7 +36,7 @@
   <!-- Job Page -->
   <url>
     <loc>https://www.nyspecialcare.org/job.html</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-04-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -36,17 +44,18 @@
   <!-- Career Page -->
   <url>
     <loc>https://www.nyspecialcare.org/career.html</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-04-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  <!-- Join us Page -->
+
+  <!-- Join Us Page -->
   <url>
     <loc>https://www.nyspecialcare.org/join-us.html</loc>
-    <lastmod>2024-12-14</lastmod>
+    <lastmod>2025-04-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-  
-  <!-- Add other pages as needed -->
+
 </urlset>
+
