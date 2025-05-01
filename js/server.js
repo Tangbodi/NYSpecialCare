@@ -47,13 +47,12 @@ app.post('/api/send-email', (req, res) => {
 // Intake form endpoint
 app.post('/api/send-intake-form', async (req, res) => {
   const {
-    childFirstName, childLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis,
+    childFirstName, childLastName, dateOfBirth, sex, mobile,
     parentFirstName, parentLastName, email, street, apt, city, state, zip,
     insurancePlan, policyNum
   } = req.body;
 
-  if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !dateOfDiagnosis ||
-    !diagnosisCode || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
+  if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
     return res.status(400).json({ status: 'error', message: 'Required fields are missing.' });
   }
   // Helper to capitalize first letter
@@ -66,7 +65,7 @@ app.post('/api/send-intake-form', async (req, res) => {
   const capitalizedParentFirstName = capitalizeFirstLetter(parentFirstName);
   const capitalizedParentLastName = capitalizeFirstLetter(parentLastName);
   const capitalizedInsurancePlan = capitalizeFirstLetter(insurancePlan);
-  
+
   const mailOptions = {
     from: `"NY Special Care" <contactus@nyspecialcare.org>`,
     to: 'contactus@nyspecialcare.org',
@@ -77,8 +76,6 @@ app.post('/api/send-intake-form', async (req, res) => {
       Parent: ${capitalizedParentFirstName} ${capitalizedParentLastName}
       DOB: ${dateOfBirth}
       Sex: ${sex}
-      Diagnosis: ${diagnosisCode}
-      Diagnosis Date: ${dateOfDiagnosis}
       Phone: ${mobile}
       Email: ${email}
       Street: ${street} 
@@ -100,14 +97,13 @@ app.post('/api/send-intake-form', async (req, res) => {
     try {
       const insertQuery = `
         INSERT INTO intake_forms (
-          child_first_name, child_last_name, child_date_of_birth, child_sex, mobile,
-          diagnosis_code, date_of_diagnosis, parent_first_name, parent_last_name,
+          child_first_name, child_last_name, child_date_of_birth, child_sex, mobile, parent_first_name, parent_last_name,
           email, street, apt, city, state, zip, insurance_plan, policy_number
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
       await db.query(insertQuery, [
-        capitalizedChildFirstName, capitalizedChildLastName, dateOfBirth, sex, mobile, diagnosisCode, dateOfDiagnosis,
+        capitalizedChildFirstName, capitalizedChildLastName, dateOfBirth, sex, mobile,
         capitalizedParentFirstName, capitalizedParentLastName, email, street, apt, city, state, zip, capitalizedInsurancePlan, policyNum
       ]);
 
