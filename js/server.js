@@ -11,15 +11,23 @@ app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 
 // Setup mail transporter
-const smtpTransport = nodemailer.createTransport({
-  host: 'mail.smtp2go.com',
-  port: 2525,
+// const smtpTransport = nodemailer.createTransport({
+//   host: 'mail.smtp2go.com',
+//   port: 2525,
+//   auth: {
+//     user: 'nyspecialcare.org',
+//     pass: '' // make sure to load this from environment if sensitive
+//   }
+// });
+const transporter = nodemailer.createTransport({
+  host: 'smtp.sendgrid.net',
+  port: 587, // or 587 if you prefer TLS
+  secure: false, // true for port 465, false for port 587
   auth: {
-    user: 'nyspecialcare.org',
-    pass: '' // make sure to load this from environment if sensitive
+    user: 'apikey', // this is literally the word 'apikey'
+    pass: '' // your actual SendGrid API key
   }
 });
-
 // Contact form endpoint
 app.post('/api/send-email', (req, res) => {
   const { firstName, lastName, email, phone, message } = req.body;
@@ -35,12 +43,21 @@ app.post('/api/send-email', (req, res) => {
     text: `You have a new message:\n\nName: ${firstName} ${lastName}\nPhone: ${phone}\nEmail: ${email}\n\nMessage:\n\n${message}`
   };
 
-  smtpTransport.sendMail(mailOptions, (error, info) => {
+  // smtpTransport.sendMail(mailOptions, (error, info) => {
+  //   if (error) {
+  //     console.error('Error sending email:', error);
+  //     return res.status(500).json({ status: 'error', message: 'Failed to send email.' });
+  //   }
+  //   res.status(200).send({ message: 'Email sent successfully' });
+  // });
+  transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
       return res.status(500).json({ status: 'error', message: 'Failed to send email.' });
     }
-    res.status(200).send({ message: 'Email sent successfully' });
+
+    // console.log('Email sent:', info.response);
+    res.status(200).send({ message: "Email sent successfully" });
   });
 });
 
@@ -88,18 +105,43 @@ app.post('/api/send-intake-form', async (req, res) => {
     `
   };
 
-  smtpTransport.sendMail(mailOptions, async (error, info) => {
+  // smtpTransport.sendMail(mailOptions, async (error, info) => {
+  //   if (error) {
+  //     console.error('Error sending form email:', error);
+  //     return res.status(500).json({ status: 'error', message: 'Failed to send form.' });
+  //   }
+
+  //   try {
+  //     const insertQuery = `
+  //       INSERT INTO intake_forms (
+  //         child_first_name, child_last_name, child_date_of_birth, child_sex, mobile, parent_first_name, parent_last_name,
+  //         email, street, apt, city, state, zip, insurance_plan, policy_number
+  //       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  //     `;
+
+  //     await db.query(insertQuery, [
+  //       capitalizedChildFirstName, capitalizedChildLastName, dateOfBirth, sex, mobile,
+  //       capitalizedParentFirstName, capitalizedParentLastName, email, street, apt, city, state, zip, capitalizedInsurancePlan, policyNum
+  //     ]);
+
+  //     res.status(200).json({ status: 'success', message: 'Form submitted and saved successfully.' });
+  //   } catch (dbError) {
+  //     console.error('Database insert error:', dbError);
+  //     res.status(500).json({ status: 'error', message: 'Form sent, but failed to save to database.' });
+  //   }
+  // });
+
+  transporter.sendMail(mailOptions, async (error, info) => {
     if (error) {
-      console.error('Error sending form email:', error);
+      console.error('Error sending form:', error);
       return res.status(500).json({ status: 'error', message: 'Failed to send form.' });
     }
-
     try {
       const insertQuery = `
         INSERT INTO intake_forms (
           child_first_name, child_last_name, child_date_of_birth, child_sex, mobile, parent_first_name, parent_last_name,
           email, street, apt, city, state, zip, insurance_plan, policy_number
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
       await db.query(insertQuery, [
@@ -112,6 +154,7 @@ app.post('/api/send-intake-form', async (req, res) => {
       console.error('Database insert error:', dbError);
       res.status(500).json({ status: 'error', message: 'Form sent, but failed to save to database.' });
     }
+
   });
 });
 
