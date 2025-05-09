@@ -89,6 +89,7 @@ app.post('/api/send-intake-form', async (req, res) => {
     `
   };
 
+
   transporter.sendMail(mailOptions, async (error, info) => {
     if (error) {
       console.error('Error sending form:', error);
