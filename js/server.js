@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const puppeteer = require('puppeteer');
 var nodemailer = require('nodemailer');
 const db = require('./db');
 
@@ -56,7 +57,7 @@ app.post('/api/send-intake-form', async (req, res) => {
   if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
     return res.status(400).json({ status: 'error', message: 'Required fields are missing.' });
   }
-  // Helper to capitalize first letter
+
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
   }
@@ -67,53 +68,71 @@ app.post('/api/send-intake-form', async (req, res) => {
   const capitalizedParentLastName = capitalizeFirstLetter(parentLastName);
   const capitalizedInsurancePlan = capitalizeFirstLetter(insurancePlan);
 
-  const mailOptions = {
-    from: `"NY Special Care" <contactus@nyspecialcare.org>`,
-    to: 'contactus@nyspecialcare.org',
-    subject: `New Intake Form Submission For: ${childFirstName} ${childLastName}`,
-    text: `
-      You have a new intake form submission:
-      Child: ${capitalizedChildFirstName} ${capitalizedChildLastName}
-      Parent: ${capitalizedParentFirstName} ${capitalizedParentLastName}
-      DOB: ${dateOfBirth}
-      Sex: ${sex}
-      Phone: ${mobile}
-      Email: ${email}
-      Street: ${street} 
-      Apt: ${apt} 
-      City: ${city} 
-      State: ${state} 
-      Zip: ${zip} 
-      Insurance: ${capitalizedInsurancePlan}
-      Policy #: ${policyNum}
-    `
-  };
+  try {
+    // Generate PDF using Puppeteer
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    const page = await browser.newPage();
+    await page.goto('https://www.nyspecialcare.org/newclientintakeform.html', { waitUntil: 'networkidle2' });
 
-  transporter.sendMail(mailOptions, async (error, info) => {
-    if (error) {
-      console.error('Error sending form:', error);
-      return res.status(500).json({ status: 'error', message: 'Failed to send form.' });
-    }
-    try {
-      const insertQuery = `
-        INSERT INTO intake_forms (
-          child_first_name, child_last_name, child_date_of_birth, child_sex, mobile, parent_first_name, parent_last_name,
-          email, street, apt, city, state, zip, insurance_plan, policy_number
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true
+    });
 
-      await db.query(insertQuery, [
-        capitalizedChildFirstName, capitalizedChildLastName, dateOfBirth, sex, mobile,
-        capitalizedParentFirstName, capitalizedParentLastName, email, street, apt, city, state, zip, capitalizedInsurancePlan, policyNum
-      ]);
+    await browser.close();
 
-      res.status(200).json({ status: 'success', message: 'Form submitted and saved successfully.' });
-    } catch (dbError) {
-      console.error('Database insert error:', dbError);
-      res.status(500).json({ status: 'error', message: 'Form sent, but failed to save to database.' });
-    }
+    // Send email with PDF attachment via SendGrid
+    transporter.sendMail({
+      to: 'contactus@nyspecialcare.org',
+      from: 'contactus@nyspecialcare.org',
+      subject: `New Intake Form Submission For: ${childFirstName} ${childLastName}`,
+      text: `
+        You have a new intake form submission:
+        Child: ${capitalizedChildFirstName} ${capitalizedChildLastName}
+        Parent: ${capitalizedParentFirstName} ${capitalizedParentLastName}
+        DOB: ${dateOfBirth}
+        Sex: ${sex}
+        Phone: ${mobile}
+        Email: ${email}
+        Street: ${street} 
+        Apt: ${apt} 
+        City: ${city} 
+        State: ${state} 
+        Zip: ${zip} 
+        Insurance: ${capitalizedInsurancePlan}
+        Policy #: ${policyNum}
+      `,
+      attachments: [
+        {
+          content: pdfBuffer.toString('base64'),
+          filename: 'intake-form-webpage.pdf',
+          type: 'application/pdf',
+          disposition: 'attachment'
+        }
+      ]
+    });
 
-  });
+    // Save to database
+    const insertQuery = `
+      INSERT INTO intake_forms (
+        child_first_name, child_last_name, child_date_of_birth, child_sex, mobile, parent_first_name, parent_last_name,
+        email, street, apt, city, state, zip, insurance_plan, policy_number
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    await db.query(insertQuery, [
+      capitalizedChildFirstName, capitalizedChildLastName, dateOfBirth, sex, mobile,
+      capitalizedParentFirstName, capitalizedParentLastName, email, street, apt, city, state, zip, capitalizedInsurancePlan, policyNum
+    ]);
+
+    res.status(200).json({ status: 'success', message: 'Form submitted, emailed with PDF, and saved.' });
+
+  } catch (error) {
+    console.error('Error in send-intake-form:', error);
+    res.status(500).json({ status: 'error', message: 'Submission failed. Try again later.' });
+  }
 });
 
 // Global error handler
