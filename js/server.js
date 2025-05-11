@@ -71,7 +71,11 @@ app.post('/api/send-intake-form', async (req, res) => {
   try {
     // Generate PDF using Puppeteer
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox'
+      ]
     });
     const page = await browser.newPage();
     await page.goto('https://www.nyspecialcare.org/newclientintakeform.html', { waitUntil: 'networkidle2' });
