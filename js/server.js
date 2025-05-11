@@ -78,7 +78,7 @@ app.post('/api/send-intake-form', async (req, res) => {
       ]
     });
     const page = await browser.newPage();
-    await page.goto('https://www.nyspecialcare.org/newclientintakeform.html', { waitUntil: 'networkidle2' });
+    await page.goto('https://www.nyspecialcare.org/newclientintakeform.html', { waitUntil: 'load' });
 
     const pdfBuffer = await page.pdf({
       format: 'A4',
