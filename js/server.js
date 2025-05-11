@@ -6,11 +6,10 @@ const sgMail = require('@sendgrid/mail');
 const db = require('./db');
 
 const app = express();
-
 app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 
-sgMail.setApiKey('YOUR_SENDGRID_API_KEY'); // Replace with your actual key
+sgMail.setApiKey(''); // Replace with your actual key
 
 app.post('/api/send-intake-form', async (req, res) => {
   const {
@@ -35,17 +34,55 @@ app.post('/api/send-intake-form', async (req, res) => {
   const capitalizedInsurancePlan = capitalize(insurancePlan);
 
   try {
+    // Launch Puppeteer and load the intake form page
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
-
     const page = await browser.newPage();
 
-    // Replace this with your live, publicly accessible intake form URL
     await page.goto('https://nyspecialcare.org/newclientintakeform.html', {
       waitUntil: 'networkidle0'
     });
 
+    // Fill the form fields with submitted data
+    await page.evaluate((data) => {
+      document.getElementById('childFirstName').value = data.childFirstName;
+      document.getElementById('childLastName').value = data.childLastName;
+      document.getElementById('dateOfBirth').value = data.dateOfBirth;
+      document.getElementById('sex').value = data.sex;
+      document.getElementById('mobile').value = data.mobile;
+      document.getElementById('parentFirstName').value = data.parentFirstName;
+      document.getElementById('parentLastName').value = data.parentLastName;
+      document.getElementById('email').value = data.email;
+      document.getElementById('street').value = data.street;
+      document.getElementById('apt').value = data.apt || '';
+      document.getElementById('city').value = data.city || '';
+      document.getElementById('state').value = data.state || '';
+      document.getElementById('zip').value = data.zip || '';
+      document.getElementById('insurancePlan').value = data.insurancePlan;
+      document.getElementById('policyNum').value = data.policyNum;
+    }, {
+      childFirstName,
+      childLastName,
+      dateOfBirth,
+      sex,
+      mobile,
+      parentFirstName,
+      parentLastName,
+      email,
+      street,
+      apt,
+      city,
+      state,
+      zip,
+      insurancePlan,
+      policyNum
+    });
+
+    // Optional: wait for a short delay to ensure DOM updates
+await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Generate PDF
     const pdfBuffer = await page.pdf({
       format: 'A4',
       printBackground: true
@@ -53,6 +90,7 @@ app.post('/api/send-intake-form', async (req, res) => {
 
     await browser.close();
 
+    // Send email with PDF attachment via SendGrid
     await sgMail.send({
       to: 'contactus@nyspecialcare.org',
       from: 'contactus@nyspecialcare.org', // Must be verified in SendGrid
@@ -60,7 +98,7 @@ app.post('/api/send-intake-form', async (req, res) => {
       text: 'A new intake form has been submitted. Please see the attached PDF.',
       attachments: [
         {
-          content: Buffer.from(pdfBuffer).toString('base64'), 
+          content: Buffer.from(pdfBuffer).toString('base64'),
           filename: 'intake-form.pdf',
           type: 'application/pdf',
           disposition: 'attachment'
@@ -68,6 +106,7 @@ app.post('/api/send-intake-form', async (req, res) => {
       ]
     });
 
+    // Save to database
     const insertQuery = `
       INSERT INTO intake_forms (
         child_first_name, child_last_name, child_date_of_birth, child_sex, mobile, parent_first_name,
