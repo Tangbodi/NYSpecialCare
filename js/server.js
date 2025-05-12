@@ -15,11 +15,11 @@ app.post('/api/send-intake-form', async (req, res) => {
   const {
     childFirstName, childLastName, dateOfBirth, sex, mobile,
     parentFirstName, parentLastName, email, street, apt, city, state, zip,
-    insurancePlan, policyNum
+    insurancePlan, policyNum, signatureData
   } = req.body;
 
   if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile ||
-      !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
+      !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum || !signatureData) {
     return res.status(400).json({ status: 'error', message: 'Required fields are missing.' });
   }
 
@@ -34,7 +34,6 @@ app.post('/api/send-intake-form', async (req, res) => {
   const capitalizedInsurancePlan = capitalize(insurancePlan);
 
   try {
-    // Launch Puppeteer and load the intake form page
     const browser = await puppeteer.launch({
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
@@ -44,8 +43,8 @@ app.post('/api/send-intake-form', async (req, res) => {
       waitUntil: 'networkidle0'
     });
 
-    // Fill the form fields with submitted data
     await page.evaluate((data) => {
+      // Fill form fields
       document.getElementById('childFirstName').value = data.childFirstName;
       document.getElementById('childLastName').value = data.childLastName;
       document.getElementById('dateOfBirth').value = data.dateOfBirth;
@@ -61,6 +60,27 @@ app.post('/api/send-intake-form', async (req, res) => {
       document.getElementById('zip').value = data.zip || '';
       document.getElementById('insurancePlan').value = data.insurancePlan;
       document.getElementById('policyNum').value = data.policyNum;
+    
+      // Create wrapper for signature label and image
+      const wrapper = document.createElement('div');
+      wrapper.style.marginTop = '40px';
+    
+      const label = document.createElement('h4');
+      label.innerText = 'Parent Signature (电子签名)';
+      label.style.marginBottom = '10px';
+      label.style.fontWeight = 'bold';
+      label.style.color = '#333';
+    
+      const sigImg = document.createElement('img');
+      sigImg.src = data.signatureData;
+      sigImg.style.maxWidth = '300px';
+      sigImg.style.border = '1px solid #ccc';
+      sigImg.alt = 'Parent Signature';
+    
+      wrapper.appendChild(label);
+      wrapper.appendChild(sigImg);
+    
+      document.querySelector('form').appendChild(wrapper);
     }, {
       childFirstName,
       childLastName,
@@ -76,8 +96,10 @@ app.post('/api/send-intake-form', async (req, res) => {
       state,
       zip,
       insurancePlan,
-      policyNum
+      policyNum,
+      signatureData
     });
+    
 
     // Optional: wait for a short delay to ensure DOM updates
 await new Promise(resolve => setTimeout(resolve, 500));
