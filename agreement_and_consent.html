@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Join Us - Make a Difference for Children with Autism</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="keywords"
+        content="join NY Special Care, autism care team, volunteer for autism programs, donate for autism support, join our mission for children with autism, partnership for autism support, make a difference in child development">
+    <meta name="description"
+        content="Join NY Special Care in supporting children with autism. Whether you choose to donate, volunteer, or partner with us, your contribution helps improve the lives of children and their families. Together, we can make a lasting impact.">
+
+    <!-- Favicon -->
+    <link href="img/ny-special-care-logo.png" rel="icon" type="image/png" sizes="32x32">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@600&family=Lobster+Two:wght@700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-xxl bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner"
+            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
+            <a href="index.html" class="navbar-brand">
+                <h1 class="m-0 text-primary"><img src="img/ny-special-care-logo.png" alt="NY Special Care Logo"
+                        style="width: 66px; height: auto; margin-right: 6px;">
+                    NY Special Care</h1>
+            </a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav mx-auto">
+                    <a href="index.html" class="nav-item nav-link">Home</a>
+                    <a href="https://donate.stripe.com/3cs7we8fC36peeAfZ1" class="nav-item nav-link">Donate</a>
+                    <a href="join-us.html" class="nav-item nav-link">Join Us</a>
+                    <a href="about.html" class="nav-item nav-link">About Us</a>
+                    <a href="career.html" class="nav-item nav-link">Career</a>
+                </div>
+                <a href="contact.html" class="btn btn-primary rounded-pill px-3 d-none d-lg-block">Contact Us</a>
+            </div>
+        </nav>
+        <!-- Navbar End -->
+
+        <!-- New Client Form Start -->
+        <div class="container py-5">
+            <form id="agreement">
+                <!-- New Patient Section -->
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <strong>ABA SERVICE AGREEMENT AND CONSENT FORM
+                            <hr> <!-- Solid line -->
+                    </div>
+                </div>
+                <style>
+                    .underline-input {
+                        border: none;
+                        border-bottom: 1px solid #000;
+                        border-radius: 0;
+                        box-shadow: none;
+                        outline: none;
+                        width: 100%;
+                    }
+                
+                    .underline-input:focus {
+                        border-color: #000;
+                        box-shadow: none;
+                    }
+                
+                    .input-wrapper-short {
+                        max-width: 300px; /* Adjust width as needed */
+                    }
+                    
+                </style>
+                <!-- Child's First Name and Last Name -->
+                  <div class="row mb-3">
+                    <div class="col-12 input-wrapper-short">
+                        <label class="form-label">Client's Full Name:</label>
+                        <input type="text" id="childFullName" name="childFullName" class="underline-input" required>
+                    </div>
+                </div>
+                <!-- Date of Birth and Sex -->
+                <div class="row mb-3">
+                    <div class="col-md-6 input-wrapper-short">
+                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-control" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6 input-wrapper-short">
+                        <label class="form-label">Parent's Full Name</label>
+                        <input type="text" id="parentFullName" name="parentFullName"  class="underline-input" required>
+                    </div>
+                </div>
+                <!-- Contract Content -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h5 class="mb-3">Consent for Services and Use of Insurance</h5>
+                        <p>
+                            By signing this agreement, I authorize NY Special Care, Inc. to provide Applied Behavior
+                            Analysis (ABA) services to my child/dependent.
+                            I also authorize NY Special Care to bill my insurance provider directly for services
+                            rendered. I understand:
+                        </p>
+                        <ul>
+                            <li>I must provide current, accurate insurance information and notify NY Special Care of any
+                                changes.</li>
+                            <li>I am responsible for any applicable copayments, deductibles, or services not covered by
+                                insurance.</li>
+                            <li>Protected Health Information (PHI) may be shared with insurance companies for the
+                                purposes of billing and authorization.</li>
+                        </ul>
+
+                        <h5 class="mt-4 mb-3">Services Offered</h5>
+                        <ul>
+                            <li>ABA services are provided by Board Certified Behavior Analysts (BCBAs), Licensed
+                                Behavior Analysts (LBAs), and/or Registered Behavior Technicians (RBTs) under
+                                supervision.</li>
+                            <li>Services include initial assessments, individualized treatment planning, direct therapy,
+                                parent training, data collection, and ongoing clinical supervision.</li>
+                            <li>Treatment is based on evidence-based practices and follows the ethical standards of the
+                                Behavior Analyst Certification Board (BACB).</li>
+                            <li>ABA therapy may take place in the home, clinic, community, or via telehealth, based on
+                                the family’s needs and insurance authorization.</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <h5 class="mt-4 mb-3">Parent/Caregiver Participation</h5>
+                <ul>
+                    <li>Caregiver involvement is a critical part of treatment success.</li>
+                    <li>Participation includes attending parent training, supporting intervention strategies, and
+                        maintaining consistent communication with the treatment team.</li>
+                    <li>A parent or designated adult over 18 must be present during all in-home sessions unless
+                        otherwise agreed.</li>
+                </ul>
+
+                <h5 class="mt-4 mb-3">Discharge or Termination of Services</h5>
+                <p>ABA services may be discontinued under any of the following circumstances:</p>
+                <ul>
+                    <li>Parent/guardian requests to end services.</li>
+                    <li>Treatment goals have been met or ABA is no longer clinically indicated.</li>
+                    <li>Insurance changes, non-payment, or loss of coverage.</li>
+                    <li>Repeated cancellations, no-shows, or lack of participation (e.g., more than 3 unexcused
+                        cancellations in a month).</li>
+                    <li>Safety concerns for staff or child.</li>
+                    <li>Disagreement or non-compliance with the agreed treatment plan without attempts to resolve
+                        concerns.</li>
+                </ul>
+                <h5 class="mt-4 mb-3">Risks and Benefits of ABA</h5>
+                <p><strong>Potential Benefits:</strong></p>
+                <ul>
+                    <li>Increased communication and social skills</li>
+                    <li>Decreased challenging behaviors</li>
+                    <li>Improved independence and daily living skills</li>
+                </ul>
+                <p><strong>Potential Risks:</strong></p>
+                <ul>
+                    <li>Emotional distress during learning</li>
+                    <li>Temporary increase in problem behavior</li>
+                    <li>Varying progress based on individual needs</li>
+                </ul>
+                <h5 class="mt-4 mb-3">Confidentiality</h5>
+                <p>
+                    NY Special Care complies with HIPAA and BACB standards. Client records and treatment information
+                    will be kept confidential and shared only with authorized individuals or entities.
+                    Written consent is required for the release of information to third parties, such as schools or
+                    other service providers.
+                </p>
+
+                <h5 class="mt-4 mb-3">Acknowledgment and Consent</h5>
+                <p>By signing below, I acknowledge that I have read and understand this agreement. I consent to:</p>
+                <ul>
+                    <li>The provision of ABA services by NY Special Care Inc.</li>
+                    <li>The use of my insurance to submit claims on behalf of the client</li>
+                    <li>Adherence to NY Special Care’s treatment, communication, and discharge policies</li>
+                    <li>Communication via email, phone, or text unless I request paper-based communication</li>
+                </ul>
+                <!-- Signature Section -->
+              
+                <div>
+                    <div>
+                        <label class="form-label"><strong>Client/Parent/Guardian:</strong></label>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-12 input-wrapper-short">
+                        <label class="form-label">Name:</label>
+                        <input type="text" id="parentPrintedName" name="parentPrintedName" class="underline-input" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6 input-wrapper-short">
+                        <label for="dateOfSign" class="form-label">Date</label>
+                        <input type="date" id="dateOfSign" name="dateOfSign" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <label class="form-label">Parent Signature (电子签名)</label>
+                        <canvas id="signature-pad" style="border: 1px solid #ccc; width: 100%; height: 150px;"></canvas>
+                        <button type="button" id="clear-signature" class="btn btn-sm btn-secondary mt-2">Clear
+                            Signature (清空签名)</button>
+                        <input type="hidden" id="signatureData" name="signatureData">
+                    </div>
+                </div>
+                <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+                <script>
+                    const canvas = document.getElementById('signature-pad');
+                    const signaturePad = new SignaturePad(canvas);
+                    const hiddenInput = document.getElementById('signatureData');
+                    const clearBtn = document.getElementById('clear-signature');
+
+                    function resizeCanvas() {
+                        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+                        canvas.width = canvas.offsetWidth * ratio;
+                        canvas.height = canvas.offsetHeight * ratio;
+                        canvas.getContext("2d").scale(ratio, ratio);
+                        signaturePad.clear(); // Clear on resize
+                    }
+
+                    window.addEventListener("resize", resizeCanvas);
+                    resizeCanvas(); // Initial call
+
+                    clearBtn.addEventListener("click", () => {
+                        signaturePad.clear();
+                        hiddenInput.value = '';
+                    });
+
+                    document.getElementById('intakeForm').addEventListener('submit', () => {
+                        if (!signaturePad.isEmpty()) {
+                            hiddenInput.value = signaturePad.toDataURL();
+                        }
+                    });
+                </script>
+                <button type="submit" class="btn btn-primary btn-lg">Submit (提交)</button>
+            </form>
+            <div id="loadingOverlay" style="
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        ">
+                Submitting...
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script type="module">
+                // Use axios as a global variable
+                document.getElementById('agreement').addEventListener('submit', async (e) => {
+                    e.preventDefault();
+
+                    const loadingOverlay = document.getElementById('loadingOverlay');
+                    loadingOverlay.style.display = 'flex'; // Show overlay
+
+                    const formData = {
+                        childFullName: document.getElementById('childFullName').value,
+                        parentFullName: document.getElementById('parentFullName').value,
+                        dateOfBirth: document.getElementById('dateOfBirth').value,
+                        parentPrintedName: document.getElementById('parentPrintedName').value,
+                        dateOfSign: document.getElementById('dateOfSign').value,
+                        signatureData: document.getElementById('signatureData').value
+                    };
+                    try {
+                        const response = await axios.post('http://localhost:3000/api/send-agreement-consent', formData);
+                        if (response.status === 200) {
+                            alert('Form sent successfully!');
+                            document.getElementById('intakeForm').reset();
+                            signaturePad.clear(); // clear canvas
+                            document.getElementById('signatureData').value = ''; // clear hidden input
+                        } else {
+                            alert('Failed to send form. Please try again later.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    } finally {
+                        loadingOverlay.style.display = 'none'; // Hide overlay
+                    }
+                });
+
+            </script>
+        </div>
+        <!-- New Client Form End -->
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="lib/wow/wow.min.js"></script>
+        <script src="lib/easing/easing.min.js"></script>
+        <script src="lib/waypoints/waypoints.min.js"></script>
+        <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="js/main.js"></script>
+</body>
+
+</html>

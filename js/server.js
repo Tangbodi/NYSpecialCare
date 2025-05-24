@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 var nodemailer = require('nodemailer');
 const db = require('./db');
-
+const puppeteer = require('puppeteer');
 const app = express();
 
 // Middleware
@@ -115,6 +115,8 @@ app.post('/api/send-intake-form', async (req, res) => {
 
   });
 });
+
+
 
 // Global error handler
 app.use((err, req, res, next) => {
