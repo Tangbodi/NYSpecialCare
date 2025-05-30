@@ -48,7 +48,7 @@
 
         <!-- Navbar Start -->
         <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top px-4 px-lg-5 py-lg-0">
-            <a href="index.html" class="navbar-brand">
+            <a class="navbar-brand">
                 <h1 class="m-0 text-primary"><img src="img/ny-special-care-logo.png" alt="NY Special Care Logo"
                         style="width: 66px; height: auto; margin-right: 6px;">
                     NY Special Care</h1>
@@ -56,22 +56,13 @@
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav mx-auto">
-                    <a href="index.html" class="nav-item nav-link">Home</a>
-                    <a href="https://donate.stripe.com/3cs7we8fC36peeAfZ1" class="nav-item nav-link">Donate</a>
-                    <a href="join-us.html" class="nav-item nav-link">Join Us</a>
-                    <a href="about.html" class="nav-item nav-link">About Us</a>
-                    <a href="career.html" class="nav-item nav-link">Career</a>
-                </div>
-                <a href="contact.html" class="btn btn-primary rounded-pill px-3 d-none d-lg-block">Contact Us</a>
-            </div>
+          
         </nav>
         <!-- Navbar End -->
 
         <!-- New Client Form Start -->
         <div class="container py-5">
-            <form id="agreement">
+            <form id="agreementForm">
                 <!-- New Patient Section -->
                 <div class="row mb-3">
                     <div class="col-12">
@@ -88,19 +79,19 @@
                         outline: none;
                         width: 100%;
                     }
-                
+
                     .underline-input:focus {
                         border-color: #000;
                         box-shadow: none;
                     }
-                
+
                     .input-wrapper-short {
-                        max-width: 300px; /* Adjust width as needed */
+                        max-width: 300px;
+                        /* Adjust width as needed */
                     }
-                    
                 </style>
                 <!-- Child's First Name and Last Name -->
-                  <div class="row mb-3">
+                <div class="row mb-3">
                     <div class="col-12 input-wrapper-short">
                         <label class="form-label">Client's Full Name:</label>
                         <input type="text" id="childFullName" name="childFullName" class="underline-input" required>
@@ -116,7 +107,7 @@
                 <div class="row mb-3">
                     <div class="col-md-6 input-wrapper-short">
                         <label class="form-label">Parent's Full Name</label>
-                        <input type="text" id="parentFullName" name="parentFullName"  class="underline-input" required>
+                        <input type="text" id="parentFullName" name="parentFullName" class="underline-input" required>
                     </div>
                 </div>
                 <!-- Contract Content -->
@@ -148,7 +139,7 @@
                             <li>Treatment is based on evidence-based practices and follows the ethical standards of the
                                 Behavior Analyst Certification Board (BACB).</li>
                             <li>ABA therapy may take place in the home, clinic, community, or via telehealth, based on
-                                the family’s needs and insurance authorization.</li>
+                                the family's needs and insurance authorization.</li>
                         </ul>
                     </div>
 
@@ -201,21 +192,22 @@
                 <ul>
                     <li>The provision of ABA services by NY Special Care Inc.</li>
                     <li>The use of my insurance to submit claims on behalf of the client</li>
-                    <li>Adherence to NY Special Care’s treatment, communication, and discharge policies</li>
+                    <li>Adherence to NY Special Care's treatment, communication, and discharge policies</li>
                     <li>Communication via email, phone, or text unless I request paper-based communication</li>
                 </ul>
                 <!-- Signature Section -->
-              
+
                 <div>
                     <div>
                         <label class="form-label"><strong>Client/Parent/Guardian:</strong></label>
                     </div>
                 </div>
-                
+
                 <div class="row mb-3">
                     <div class="col-12 input-wrapper-short">
                         <label class="form-label">Name:</label>
-                        <input type="text" id="parentPrintedName" name="parentPrintedName" class="underline-input" required>
+                        <input type="text" id="parentPrintedName" name="parentPrintedName" class="underline-input"
+                            required>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -257,7 +249,7 @@
                         hiddenInput.value = '';
                     });
 
-                    document.getElementById('intakeForm').addEventListener('submit', () => {
+                    document.getElementById('agreementForm').addEventListener('submit', () => {
                         if (!signaturePad.isEmpty()) {
                             hiddenInput.value = signaturePad.toDataURL();
                         }
@@ -284,11 +276,16 @@
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script type="module">
                 // Use axios as a global variable
-                document.getElementById('agreement').addEventListener('submit', async (e) => {
+                document.getElementById('agreementForm').addEventListener('submit', async (e) => {
                     e.preventDefault();
 
-                    const loadingOverlay = document.getElementById('loadingOverlay');
-                    loadingOverlay.style.display = 'flex'; // Show overlay
+                    if (!signaturePad.isEmpty()) {
+                        const loadingOverlay = document.getElementById('loadingOverlay');
+                        loadingOverlay.style.display = 'flex'; // Show overlay
+                    } else {
+                        alert('Please sign the form before submitting.');
+                        return;
+                    }
 
                     const formData = {
                         childFullName: document.getElementById('childFullName').value,
@@ -299,10 +296,10 @@
                         signatureData: document.getElementById('signatureData').value
                     };
                     try {
-                        const response = await axios.post('http://localhost:3000/api/send-agreement-consent', formData);
+                        const response = await axios.post('http://localhost:3000/api/send-agreement-consent-form', formData);
                         if (response.status === 200) {
                             alert('Form sent successfully!');
-                            document.getElementById('intakeForm').reset();
+                            document.getElementById('agreementForm').reset();
                             signaturePad.clear(); // clear canvas
                             document.getElementById('signatureData').value = ''; // clear hidden input
                         } else {
@@ -321,7 +318,7 @@
         <!-- New Client Form End -->
 
         <!-- Back to Top -->
-        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+        <!-- <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a> -->
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
