@@ -47,10 +47,10 @@ app.post('/api/send-intake-form', async (req, res) => {
   const {
     childFirstName, childLastName, dateOfBirth, sex, mobile,
     parentFirstName, parentLastName, email, street, apt, city, state, zip,
-    insurancePlan, policyNum
+    insurancePlan, idNum
   } = req.body;
 
-  if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !policyNum) {
+  if (!childFirstName || !childLastName || !dateOfBirth || !sex || !mobile || !parentFirstName || !parentLastName || !email || !street || !insurancePlan || !idNum) {
     return res.status(400).json({ status: 'error', message: 'Required fields are missing.' });
   }
 
@@ -82,7 +82,7 @@ app.post('/api/send-intake-form', async (req, res) => {
       State: ${state} 
       Zip: ${zip} 
       Insurance: ${capitalizedInsurancePlan}
-      Policy #: ${policyNum}
+      ID #: ${idNum}
     `
   };
 
@@ -92,13 +92,13 @@ app.post('/api/send-intake-form', async (req, res) => {
     const insertQuery = `
       INSERT INTO intake_forms (
         child_first_name, child_last_name, child_date_of_birth, child_sex, mobile, parent_first_name, parent_last_name,
-        email, street, apt, city, state, zip, insurance_plan, policy_number
+        email, street, apt, city, state, zip, insurance_plan, id_number
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     await db.query(insertQuery, [
       capitalizedChildFirstName, capitalizedChildLastName, dateOfBirth, sex, mobile,
-      capitalizedParentFirstName, capitalizedParentLastName, email, street, apt, city, state, zip, capitalizedInsurancePlan, policyNum
+      capitalizedParentFirstName, capitalizedParentLastName, email, street, apt, city, state, zip, capitalizedInsurancePlan, idNum
     ]);
 
     res.status(200).json({ status: 'success', message: 'Form submitted and saved successfully.' });
