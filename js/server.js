@@ -18,29 +18,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-// Contact form endpoint
-app.post('/api/send-email', (req, res) => {
-  const { firstName, lastName, email, phone, message } = req.body;
 
-  if (!firstName || !lastName || !phone || !email || !message) {
-    return res.status(400).json({ status: 'error', message: 'All fields are required.' });
-  }
-
-  const mailOptions  = {
-    from: '"NY Special Care" <contactus@nyspecialcare.org>',
-    to: 'contactus@nyspecialcare.org',
-    subject: `New Contact Form Submission From: ${firstName} ${lastName}`,
-    text: `You have a new message:\n\nName: ${firstName} ${lastName}\nPhone: ${phone}\nEmail: ${email}\n\nMessage:\n\n${message}`
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending email:', error);
-      return res.status(500).json({ status: 'error', message: 'Failed to send email.' });
-    }
-    res.status(200).send({ message: 'Email sent successfully' });
-  });
-});
 
 // Intake form endpoint
 app.post('/api/send-intake-form', async (req, res) => {

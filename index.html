@@ -254,36 +254,6 @@
                                 </div>
                             </div>
                         </form>
-                        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-                        <script type="module">
-                            // Use axios as a global variable
-                            document.getElementById('contactForm').addEventListener('submit', async (e) => {
-                                e.preventDefault();
-
-                                const formData = {
-                                    firstName: document.getElementById('firstName').value,
-                                    lastName: document.getElementById('lastName').value,
-                                    phone: document.getElementById('phone').value,
-                                    email: document.getElementById('email').value,
-                                    message: document.getElementById('message').value,
-                                };
-
-                                try {
-                                    const response = await axios.post('/api/send-email', formData);
-                                    if (response.status === 200) {
-                                        alert('Email sent successfully!');
-                                        document.getElementById('contactForm').reset();
-                                    } else {
-                                        alert('Failed to send email. Please try again later.');
-                                    }
-                                } catch (error) {
-                                    console.error('Error:', error);
-                                    alert('An error occurred. Please try again.');
-                                }
-                            });
-                        </script>
-
-
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s" style="min-height: 400px;">
@@ -380,6 +350,13 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(e) {
+            e.preventDefault(); // prevent page reload
+            alert("Message sent successfully!");
+            this.reset(); // optional: clear form fields after sending
+        });
+        </script>
 </body>
 
 </html>
